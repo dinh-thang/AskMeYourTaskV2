@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Dtos;
+using ApplicationCore.Entities.Todo;
 using ApplicationCore.Interfaces.Data;
 using ApplicationCore.Interfaces.Services;
 using ApplicationCore.Mappers;
@@ -25,23 +26,44 @@ namespace ApplicationCore.Services
             {
                 return false;
             }
-
-            list.AddTodo(_mapper);
+            list.AddTodo(_mapper.ToEntity<Todo>(newTodo));
+            return true;
         }
 
-        public bool MarkTodoCompleted(int id)
+        public bool MarkTodoCompleted(int id, int listId)
         {
-            throw new NotImplementedException();
+            Todo? selectedTodo = _unitOfWork.TodoList.GetTodoById(id, listId);
+            
+            if (selectedTodo == null) 
+            {
+                return false;
+            }
+            selectedTodo.MarkCompleted();
+            return true;
         }
 
-        public bool UpdateTodoImportantStatus(int id, bool isImportant)
+        public bool UpdateTodoImportantStatus(int id, int listId, bool isImportant)
         {
-            throw new NotImplementedException();
+            Todo? selectedTodo = _unitOfWork.TodoList.GetTodoById(id, listId);
+
+            if (selectedTodo == null)
+            {
+                return false;
+            }
+            selectedTodo.Important = true;
+            return true;
         }
 
         public bool UpdateTodoPriorityInList(int id, int listId, int priority)
         {
-            throw new NotImplementedException();
+            Todo? selectedTodo = _unitOfWork.TodoList.GetTodoById(id, listId);
+
+            if (selectedTodo == null)
+            {
+                return false;
+            }
+            selectedTodo.Priority = priority;   
+            return true;
         }
     }
 }

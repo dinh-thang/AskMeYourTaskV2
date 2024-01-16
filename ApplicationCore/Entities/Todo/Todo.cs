@@ -11,6 +11,7 @@ namespace ApplicationCore.Entities.Todo
             Description = desc;
             DateCreated = DateTime.Today;
         }
+        public Todo() { }
 
         public string Title { get; set; } = null!;
         public string Description { get; set; } = string.Empty;

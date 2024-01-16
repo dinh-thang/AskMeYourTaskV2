@@ -16,7 +16,7 @@ namespace ApplicationCore.Interfaces.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A boolean value represents the operation status</returns>
-        bool MarkTodoCompleted(int id);
+        bool MarkTodoCompleted(int id, int listId);
 
         /// <summary>
         /// Change a Todo's important status
@@ -24,7 +24,7 @@ namespace ApplicationCore.Interfaces.Services
         /// <param name="id"></param>
         /// <param name="isImportant"></param>
         /// <returns>A boolean value represents the operation status</returns>
-        bool UpdateTodoImportantStatus(int id, bool isImportant);
+        bool UpdateTodoImportantStatus(int id, int listId, bool isImportant);
 
         /// <summary>
         /// Change a Todo's priority level in the selected TodoList
