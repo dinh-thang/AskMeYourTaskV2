@@ -20,27 +20,60 @@ namespace ApplicationCore.Services
         public IEnumerable<TodoListDto> GetAllTodoLists()
         {
             List<TodoListDto> resultList = new List<TodoListDto>();
+            List<TodoDto> todos = new List<TodoDto>();
 
             foreach (TodoList list in _unitOfWork.TodoList.GetAllTodoList())
             {
-                resultList.Add(_mapper.ToDto<TodoListDto>(list));
+                TodoListDto listDto = _mapper.ToDto<TodoListDto>(list);
+                
+                // manually mapping the Todos property
+                todos = _mapper.ToDtoList<TodoDto>(list.Todos).ToList();
+                listDto.Todos = todos;
+
+                resultList.Add(listDto);
             }
-            throw new NotImplementedException();
+            return resultList;
         }
 
         public bool AddNewTodoList(TodoListDto newTodoList)
         {
-            throw new NotImplementedException();
+            try
+            {
+                TodoList list = _mapper.ToEntity<TodoList>(newTodoList);
+                _unitOfWork.TodoList.AddTodoList(list);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            _unitOfWork.Commit();
+            return true;
         }
 
         public bool UpdateTodoListColor(int id, Color color)
         {
-            throw new NotImplementedException();
+            TodoList? list = _unitOfWork.TodoList.GetTodoListById(id);
+
+            if (list == null) 
+            {
+                return false;
+            }
+            list.Color = color;
+            _unitOfWork.Commit();
+            return true;
         }
 
         public bool RemoveTodoListById(int id)
         {
-            throw new NotImplementedException();
+            TodoList? list = _unitOfWork.TodoList.GetTodoListById(id);
+
+            if (list == null) 
+            {
+                return false;
+            }
+            _unitOfWork.TodoList.DeleteTodoList(list);
+            _unitOfWork.Commit();
+            return true;
         }
 
     }

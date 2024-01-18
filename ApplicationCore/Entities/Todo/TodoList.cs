@@ -7,6 +7,12 @@ namespace ApplicationCore.Entities.Todo
     {
         private List<Todo> _todos;
 
+        public TodoList()
+        {
+            _todos = new List<Todo>();
+            Todos = _todos.AsReadOnly();
+        }
+
         public TodoList(string title)
         {
             _todos = new List<Todo>();
@@ -15,7 +21,7 @@ namespace ApplicationCore.Entities.Todo
             Title = title;
         }
 
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
         public Color Color { get; set; } = 0;
         public IReadOnlyCollection<Todo> Todos { get; private set; }
 
