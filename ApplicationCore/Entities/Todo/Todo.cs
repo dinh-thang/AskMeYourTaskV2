@@ -19,7 +19,7 @@ namespace ApplicationCore.Entities.Todo
         public bool Completed { get; private set; } = false;
         public DateTime DateCreated { get; private set; }
         public int Priority { get; set; }
-        public Color Color { get; set; } = 0;
+        public string Color { get; set; } = string.Empty;
         public int TodoListId { get; set; }
         public TodoList TodoList { get; set; } = null!;
 

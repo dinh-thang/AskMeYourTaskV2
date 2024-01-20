@@ -22,7 +22,7 @@ namespace ApplicationCore.Entities.Todo
         }
 
         public string Title { get; set; } = string.Empty;
-        public Color Color { get; set; } = 0;
+        public string Color { get; set; } = string.Empty;
         public IReadOnlyCollection<Todo> Todos { get; private set; }
 
         public Todo? FindTodoById(int id) 

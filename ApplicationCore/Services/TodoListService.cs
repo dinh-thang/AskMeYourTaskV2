@@ -50,7 +50,7 @@ namespace ApplicationCore.Services
             return true;
         }
 
-        public bool UpdateTodoListColor(int id, Color color)
+        public bool UpdateTodoListColor(int id, string hexValue)
         {
             TodoList? list = _unitOfWork.TodoList.GetTodoListById(id);
 
@@ -58,7 +58,7 @@ namespace ApplicationCore.Services
             {
                 return false;
             }
-            list.Color = color;
+            list.Color = hexValue;
             _unitOfWork.Commit();
             return true;
         }

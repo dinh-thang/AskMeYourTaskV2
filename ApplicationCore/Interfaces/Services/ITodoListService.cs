@@ -1,5 +1,4 @@
 ﻿using ApplicationCore.Dtos;
-using ApplicationCore.Enums;
 
 namespace ApplicationCore.Interfaces.Services
 {
@@ -31,6 +30,6 @@ namespace ApplicationCore.Interfaces.Services
         /// <param name="id"></param>
         /// <param name="color"></param>
         /// <returns>A boolean value represents the operation status</returns>
-        bool UpdateTodoListColor(int id, Color color);
+        bool UpdateTodoListColor(int id, string hexValue);
     }
 }

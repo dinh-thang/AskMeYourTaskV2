@@ -1,5 +1,4 @@
-﻿using ApplicationCore.Enums;
-
+﻿
 namespace ApplicationCore.Dtos
 {
     public class TodoDto
@@ -10,6 +9,6 @@ namespace ApplicationCore.Dtos
         public bool Completed { get; set; }
         public bool Important { get; set; }
         public int Priority { get; set; }
-        public Color Color { get; set; }
+        public string Color { get; set; } = string.Empty;
     }
 }
