@@ -9,9 +9,9 @@ namespace WebApi.Endpoints
 
         }
 
-        private IResult GetTodoById(string id)
+        private static IResult GetTodoById(string id)
         {
-
+            throw new NotImplementedException();
         }
     }
 }

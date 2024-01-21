@@ -1,5 +1,4 @@
 ﻿using ApplicationCore.Entity;
-using ApplicationCore.Enums;
 
 namespace ApplicationCore.Entities.Todo
 {

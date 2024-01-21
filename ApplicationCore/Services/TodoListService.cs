@@ -1,6 +1,5 @@
 ﻿using ApplicationCore.Dtos;
 using ApplicationCore.Entities.Todo;
-using ApplicationCore.Enums;
 using ApplicationCore.Interfaces.Data;
 using ApplicationCore.Interfaces.Services;
 using ApplicationCore.Mappers;
