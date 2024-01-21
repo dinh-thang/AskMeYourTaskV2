@@ -8,5 +8,6 @@ namespace DataAccess.Data
         public AppDbContext(DbContextOptions options) : base(options) { }
 
         public DbSet<TodoList> TodoList { get; set; }
+        public DbSet<Todo> Todo { get; set; }
     }
 }

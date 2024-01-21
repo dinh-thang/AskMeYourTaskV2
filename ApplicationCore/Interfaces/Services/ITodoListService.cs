@@ -22,7 +22,7 @@ namespace ApplicationCore.Interfaces.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A boolean value represents the operation status</returns>
-        bool RemoveTodoListById(int id);
+        bool RemoveTodoListById(string id);
 
         /// <summary>
         /// Modify a selected TodoList's color. This operation will also set the color of the Todos belong to that list.
@@ -30,6 +30,6 @@ namespace ApplicationCore.Interfaces.Services
         /// <param name="id"></param>
         /// <param name="color"></param>
         /// <returns>A boolean value represents the operation status</returns>
-        bool UpdateTodoListColor(int id, string hexValue);
+        bool UpdateTodoListColor(string id, string hexValue);
     }
 }

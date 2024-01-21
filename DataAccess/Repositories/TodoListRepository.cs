@@ -1,5 +1,4 @@
 ﻿using ApplicationCore.Entities.Todo;
-using ApplicationCore.Exceptions;
 using ApplicationCore.Interfaces.Repository;
 using DataAccess.Data;
 
@@ -14,20 +13,16 @@ namespace DataAccess.Repositories
             _context = context;
         }
 
-        public Todo? GetTodoById(int todoId, int todoListId)
-        {
-            var todoList = GetTodoListById(todoListId);
-            
-            if (todoList == null) 
-            {
-                throw new EntityNotFoundException($"TodoList entity with an id of {todoListId} was not found.");
-            }
-            return todoList.FindTodoById(todoId);
+        public Todo? GetTodoById(string id)
+        {            
+            Guid guid = Guid.Parse(id);
+            return _context.Todo.FirstOrDefault(todo => todo.Id == guid);
         }
 
-        public TodoList? GetTodoListById(int id)
+        public TodoList? GetTodoListById(string id)
         {
-            return _context.TodoList.FirstOrDefault(todoList => todoList.Id == id);
+            Guid guid = Guid.Parse(id);
+            return _context.TodoList.FirstOrDefault(todoList => todoList.Id == guid);
         }    
 
         public IEnumerable<TodoList> GetAllTodoList()
@@ -61,11 +56,11 @@ namespace DataAccess.Repositories
             return  true;
         }
 
-        public bool DeleteTodoFromList(TodoList todoList, Todo todo)
+        public bool DeleteTodo(Todo todo)
         {
             try
             {
-                todoList.RemoveCompletedTodo(todo.Id);
+                _context.Todo.Remove(todo);
             }
             catch (Exception) 
             {

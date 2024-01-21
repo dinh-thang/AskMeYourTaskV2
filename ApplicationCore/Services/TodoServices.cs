@@ -18,9 +18,9 @@ namespace ApplicationCore.Services
             _mapper = mapper;
         }
 
-        public bool AddNewTodo(int listId, TodoDto newTodo)
+        public bool AddNewTodo(string listId, TodoDto newTodo)
         {
-            var list = _unitOfWork.TodoList.GetTodoListById(listId);
+            TodoList? list = _unitOfWork.TodoList.GetTodoListById(listId);
 
             if (list == null) 
             {
@@ -30,9 +30,9 @@ namespace ApplicationCore.Services
             return true;
         }
 
-        public bool MarkTodoCompleted(int id, int listId)
+        public bool MarkTodoCompleted(string id)
         {
-            Todo? selectedTodo = _unitOfWork.TodoList.GetTodoById(id, listId);
+            Todo? selectedTodo = _unitOfWork.TodoList.GetTodoById(id);
             
             if (selectedTodo == null) 
             {
@@ -42,9 +42,9 @@ namespace ApplicationCore.Services
             return true;
         }
 
-        public bool UpdateTodoImportantStatus(int id, int listId, bool isImportant)
+        public bool UpdateTodoImportantStatus(string id, bool isImportant)
         {
-            Todo? selectedTodo = _unitOfWork.TodoList.GetTodoById(id, listId);
+            Todo? selectedTodo = _unitOfWork.TodoList.GetTodoById(id);
 
             if (selectedTodo == null)
             {
@@ -54,9 +54,9 @@ namespace ApplicationCore.Services
             return true;
         }
 
-        public bool UpdateTodoPriorityInList(int id, int listId, int priority)
+        public bool UpdateTodoPriorityInList(string id, int priority)
         {
-            Todo? selectedTodo = _unitOfWork.TodoList.GetTodoById(id, listId);
+            Todo? selectedTodo = _unitOfWork.TodoList.GetTodoById(id);
 
             if (selectedTodo == null)
             {

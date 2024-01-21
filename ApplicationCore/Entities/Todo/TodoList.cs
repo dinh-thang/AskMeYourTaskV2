@@ -1,5 +1,4 @@
 ﻿using ApplicationCore.Entity;
-using ApplicationCore.Enums;
 
 namespace ApplicationCore.Entities.Todo
 {
@@ -25,9 +24,10 @@ namespace ApplicationCore.Entities.Todo
         public string Color { get; set; } = string.Empty;
         public IReadOnlyCollection<Todo> Todos { get; private set; }
 
-        public Todo? FindTodoById(int id) 
+        public Todo? FindTodoById(string id) 
         {
-            return _todos.FirstOrDefault(todo => todo.Id == id);
+            Guid guid = Guid.Parse(id);
+            return _todos.FirstOrDefault(todo => todo.Id == guid);
         }
 
         public void AddTodo(Todo todo)
@@ -36,9 +36,10 @@ namespace ApplicationCore.Entities.Todo
             Todos = _todos;
         }
 
-        public void RemoveCompletedTodo(int id)
+        public void RemoveCompletedTodo(string id)
         {
-            var completedTodo = _todos.Where(todo => todo.Id == id).FirstOrDefault();
+            Guid guid = Guid.Parse(id);
+            var completedTodo = _todos.Where(todo => todo.Id == guid).FirstOrDefault();
 
             if (completedTodo == null) 
             {

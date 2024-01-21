@@ -5,54 +5,52 @@ namespace ApplicationCore.Interfaces.Repository
     public interface ITodoListRepository
     {
         /// <summary>
-        /// Get a Todo by from the database using the todoId and its todoListId
+        /// Get a todo using its id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>A Todo object or null</returns>
-        /// <exception cref="EntityNotFoundException"></exception>
-        Todo? GetTodoById(int todoId, int todoListId);
+        /// <returns>A Todo object or null if not found</returns>
+        Todo? GetTodoById(string id);
 
         /// <summary>
-        /// Get a TodoList from the database using Id
+        /// Get a todo list using its id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>A TodoList object or null</returns>
-        TodoList? GetTodoListById(int id);
+        /// <returns>A TodoList object or null if not found</returns>
+        TodoList? GetTodoListById(string id);
 
         /// <summary>
-        /// Get an enumerator of all TodoLists
+        /// Get an enumerator of a collection containing all todo lists
         /// </summary>
-        /// <returns>A List<TodoList> object</returns>
+        /// <returns>An IEnumerable of type TodoList</returns>
         IEnumerable<TodoList> GetAllTodoList();
 
         /// <summary>
-        /// Add a TodoList to the database
+        /// Add new todo list to the database
         /// </summary>
         /// <param name="todoList"></param>
-        /// <returns>A boolean value representing the operation status</returns>
+        /// <returns>A boolean value indicate if the operation is successful.</returns>
         bool AddTodoList(TodoList todoList);
 
         /// <summary>
-        /// Add a Todo to a specific TodoList
+        /// Add new todo to the selected todo list
         /// </summary>
-        /// <param name="listId"></param>
+        /// <param name="todoList"></param>
         /// <param name="todo"></param>
-        /// <returns>A boolean value representing the operation status</returns>
+        /// <returns>A boolean value indicate if the operation is successful.</returns>
         bool AddTodoToList(TodoList todoList, Todo todo);
 
         /// <summary>
-        /// Delete a TodoList from the database
+        /// Remove a todo list from the database
         /// </summary>
-        /// <param name="listId"></param>
-        /// <returns>A boolean value representing the operation status</returns>
+        /// <param name="todoList"></param>
+        /// <returns>A boolean value indicate if the operation is successful.</returns>
         bool DeleteTodoList(TodoList todoList);
 
         /// <summary>
-        /// Delete a Todo from a specific TodoList
+        /// Remove a todo from the database
         /// </summary>
-        /// <param name="listId"></param>
-        /// <param name="todoId"></param>
-        /// <returns>A boolean value representing the operation status</returns>
-        bool DeleteTodoFromList(TodoList todoList, Todo todo);
+        /// <param name="todo"></param>
+        /// <returns>A boolean value indicate if the operation is successful.</returns>
+        bool DeleteTodo(Todo todo);
     }
 }
