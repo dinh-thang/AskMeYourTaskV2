@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen();
 
 // Register DbContext
 builder.Services.AddDbContext<AppDbContext>(
-    options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Register data services
 builder.Services.AddScoped<ITodoListRepository, TodoListRepository>();
@@ -31,13 +31,13 @@ builder.Services.AddScoped<ITodoListServices, TodoListServices>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
 
+    app.UseDeveloperExceptionPage();
+}
 app.UseHttpsRedirection();
 
 TodoEndpoints.MapEndpoints(app);

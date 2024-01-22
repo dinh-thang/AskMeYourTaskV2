@@ -1,11 +1,10 @@
-﻿using ApplicationCore.Entities.Todo;
-using ApplicationCore.Interfaces.Repository;
+﻿using ApplicationCore.Interfaces.Repository;
 
 namespace ApplicationCore.Interfaces.Data
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
-        public ITodoListRepository TodoList { get; set; }
+        public ITodoListRepository TodoList { get; }
         void Commit();
     }
 }

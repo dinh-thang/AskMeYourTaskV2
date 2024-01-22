@@ -9,10 +9,10 @@ namespace WebApi.Endpoints
         
         public static void MapEndpoints(this WebApplication app)
         {
-            app.MapGet($"{baseRoute}/getAll", (ITodoListServices todoListServices) => GetAllTodoLists(todoListServices));
+            app.MapGet($"{baseRoute}/get", (ITodoListServices todoListServices) => GetAllTodoLists(todoListServices));
             app.MapPost($"{baseRoute}/add", (ITodoListServices todoListServices, TodoListDto dto) => AddNewTodoList(todoListServices, dto));
             app.MapDelete($"{baseRoute}/delete", (ITodoListServices todoListServices, string id) => RemoveTodoListById(todoListServices, id));
-            app.MapPut($"{baseRoute}/add", (ITodoListServices todoListServices, string id, string colorHex) => UpdateTodoListColor(todoListServices, id, colorHex));
+            app.MapPut($"{baseRoute}/update/color", (ITodoListServices todoListServices, string id, string colorHex) => UpdateTodoListColor(todoListServices, id, colorHex));
         }
 
         private static IResult GetAllTodoLists(ITodoListServices todoListServices)

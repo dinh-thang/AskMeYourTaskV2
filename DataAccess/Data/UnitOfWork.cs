@@ -8,18 +8,22 @@ namespace DataAccess.Data
     {
         private readonly AppDbContext _context;
 
-        public UnitOfWork(AppDbContext context)
+        public UnitOfWork(AppDbContext context, ITodoListRepository todoListRepository)
         {
             _context = context;
-
-            TodoList = new Repositories.TodoListRepository(_context);
+            TodoList = todoListRepository;
         }
 
-        public ApplicationCore.Interfaces.Repository.ITodoListRepository TodoList { get; set; }
+        public ITodoListRepository TodoList { get; }
 
         public void Commit()
         {
             _context.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
         }
     }
 }

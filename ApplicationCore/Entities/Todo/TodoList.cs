@@ -21,7 +21,7 @@ namespace ApplicationCore.Entities.Todo
         }
 
         public string Title { get; set; } = string.Empty;
-        public string Color { get; set; } = string.Empty;
+        public string Color { get; set; } = string.Empty;   
         public IReadOnlyCollection<Todo> Todos { get; private set; }
 
         public void AddTodo(Todo todo)

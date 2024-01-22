@@ -26,7 +26,12 @@ namespace ApplicationCore.Services
             {
                 return false;
             }
-            list.AddTodo(_mapper.ToEntity<Todo>(newTodo));
+
+            Todo todo = _mapper.ToEntity<Todo>(newTodo);
+            todo.TodoListId = Guid.Parse(listId);
+            todo.TodoList = list;
+
+            list.AddTodo(todo);
             return true;
         }
 
