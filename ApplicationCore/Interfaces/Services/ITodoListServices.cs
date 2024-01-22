@@ -2,7 +2,7 @@
 
 namespace ApplicationCore.Interfaces.Services
 {
-    public interface ITodoListService
+    public interface ITodoListServices
     {
         /// <summary>
         /// Get all TodoLists from the database

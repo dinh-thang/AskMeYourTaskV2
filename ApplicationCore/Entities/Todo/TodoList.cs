@@ -24,29 +24,10 @@ namespace ApplicationCore.Entities.Todo
         public string Color { get; set; } = string.Empty;
         public IReadOnlyCollection<Todo> Todos { get; private set; }
 
-        public Todo? FindTodoById(string id) 
-        {
-            Guid guid = Guid.Parse(id);
-            return _todos.FirstOrDefault(todo => todo.Id == guid);
-        }
-
         public void AddTodo(Todo todo)
         {
             _todos.Add(todo);
             Todos = _todos;
-        }
-
-        public void RemoveCompletedTodo(string id)
-        {
-            Guid guid = Guid.Parse(id);
-            var completedTodo = _todos.Where(todo => todo.Id == guid).FirstOrDefault();
-
-            if (completedTodo == null) 
-            {
-                return;
-            }
-
-            _todos.Remove(completedTodo);
         }
     }
 }

@@ -12,10 +12,10 @@ namespace DataAccess.Data
         {
             _context = context;
 
-            TodoList = new TodoListRepository(_context);
+            TodoList = new Repositories.TodoListRepository(_context);
         }
 
-        public ITodoListRepository TodoList { get; set; }
+        public ApplicationCore.Interfaces.Repository.ITodoListRepository TodoList { get; set; }
 
         public void Commit()
         {

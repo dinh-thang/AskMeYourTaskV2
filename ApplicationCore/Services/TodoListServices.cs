@@ -6,12 +6,12 @@ using ApplicationCore.Mappers;
 
 namespace ApplicationCore.Services
 {
-    public class TodoListService : ITodoListService
+    public class TodoListServices : ITodoListServices
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public TodoListService(IUnitOfWork unitOfWork, IMapper mapper)
+        public TodoListServices(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

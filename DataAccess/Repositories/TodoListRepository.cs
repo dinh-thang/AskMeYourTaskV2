@@ -4,7 +4,7 @@ using DataAccess.Data;
 
 namespace DataAccess.Repositories
 {
-    public class TodoListRepository : ITodoListRepository
+    public class TodoListRepository : ApplicationCore.Interfaces.Repository.ITodoListRepository
     {
         private readonly AppDbContext _context;
 

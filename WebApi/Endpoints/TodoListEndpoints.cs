@@ -5,19 +5,24 @@ namespace WebApi.Endpoints
 {
     public static class TodoListEndpoints
     {
+        private static string baseRoute = "api/todoList";
         
         public static void MapEndpoints(this WebApplication app)
         {
+            app.MapGet($"{baseRoute}/getAll", (ITodoListServices todoListServices) => GetAllTodoLists(todoListServices));
+            app.MapPost($"{baseRoute}/add", (ITodoListServices todoListServices, TodoListDto dto) => AddNewTodoList(todoListServices, dto));
+            app.MapDelete($"{baseRoute}/delete", (ITodoListServices todoListServices, string id) => RemoveTodoListById(todoListServices, id));
+            app.MapPut($"{baseRoute}/add", (ITodoListServices todoListServices, string id, string colorHex) => UpdateTodoListColor(todoListServices, id, colorHex));
         }
 
-        private static IResult GetAllTodoLists(ITodoListService todoListService)
+        private static IResult GetAllTodoLists(ITodoListServices todoListServices)
         {
-            return Results.Ok(todoListService.GetAllTodoLists());
+            return Results.Ok(todoListServices.GetAllTodoLists());
         }
 
-        private static IResult AddNewTodoList(ITodoListService todoListService, TodoListDto newTodoList)
+        private static IResult AddNewTodoList(ITodoListServices todoListServices, TodoListDto newTodoList)
         {
-            bool isSuccess = todoListService.AddNewTodoList(newTodoList);
+            bool isSuccess = todoListServices.AddNewTodoList(newTodoList);
             
             if (isSuccess)
             {
@@ -26,9 +31,9 @@ namespace WebApi.Endpoints
             return Results.StatusCode(500);
         }
 
-        private static IResult RemoveTodoListById(ITodoListService todoListService, int id)
+        private static IResult RemoveTodoListById(ITodoListServices todoListServices, string id)
         {
-            bool isSuccess = todoListService.RemoveTodoListById(id);
+            bool isSuccess = todoListServices.RemoveTodoListById(id);
 
             if (isSuccess)
             {
@@ -37,9 +42,9 @@ namespace WebApi.Endpoints
             return Results.BadRequest("Operation was unsuccessful.");
         }
 
-        private static IResult UpdateTodoListColor(ITodoListService todoListService, int id, string color)
+        private static IResult UpdateTodoListColor(ITodoListServices todoListServices, string id, string color)
         {
-            bool isSuccess = todoListService.UpdateTodoListColor(id, color);
+            bool isSuccess = todoListServices.UpdateTodoListColor(id, color);
 
             if (isSuccess) 
             {
