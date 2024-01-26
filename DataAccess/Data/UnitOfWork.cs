@@ -1,6 +1,5 @@
 ﻿using ApplicationCore.Interfaces.Data;
 using ApplicationCore.Interfaces.Repository;
-using DataAccess.Repositories;
 
 namespace DataAccess.Data
 {
@@ -16,7 +15,12 @@ namespace DataAccess.Data
 
         public ITodoListRepository TodoList { get; }
 
-        public void Commit()
+        public void Update(object entity)
+        {
+            _context.Update(entity);
+        }
+
+        public void Save()
         {
             _context.SaveChanges();
         }

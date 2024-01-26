@@ -32,14 +32,6 @@ namespace ApplicationCore.Interfaces.Repository
         bool AddTodoList(TodoList todoList);
 
         /// <summary>
-        /// Add new todo to the selected todo list
-        /// </summary>
-        /// <param name="todoList"></param>
-        /// <param name="todo"></param>
-        /// <returns>A boolean value indicate if the operation is successful.</returns>
-        bool AddTodoToList(TodoList todoList, Todo todo);
-
-        /// <summary>
         /// Remove a todo list from the database
         /// </summary>
         /// <param name="todoList"></param>

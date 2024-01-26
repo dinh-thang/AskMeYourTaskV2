@@ -11,7 +11,6 @@ namespace ApplicationCore.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-
         public TodoServices(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
@@ -20,18 +19,16 @@ namespace ApplicationCore.Services
 
         public bool AddNewTodo(string listId, TodoDto newTodo)
         {
-            TodoList? list = _unitOfWork.TodoList.GetTodoListById(listId);
+            TodoList? todoList = _unitOfWork.TodoList.GetTodoListById(listId);
 
-            if (list == null) 
+            if (todoList == null)
             {
                 return false;
             }
-
             Todo todo = _mapper.ToEntity<Todo>(newTodo);
-            todo.TodoListId = Guid.Parse(listId);
-            todo.TodoList = list;
-
-            list.AddTodo(todo);
+            todoList.AddTodo(todo);
+            _unitOfWork.Update(todoList);
+            //_unitOfWork.Commit();
             return true;
         }
 
@@ -43,6 +40,7 @@ namespace ApplicationCore.Services
             {
                 return false;
             }
+
             selectedTodo.MarkCompleted();
             return true;
         }

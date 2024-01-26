@@ -19,14 +19,14 @@ namespace ApplicationCore.Services
         public IEnumerable<TodoListDto> GetAllTodoLists()
         {
             List<TodoListDto> resultList = new List<TodoListDto>();
-            List<TodoDto> todos = new List<TodoDto>();
+            IEnumerable<TodoDto> todos = new List<TodoDto>();
 
             foreach (TodoList list in _unitOfWork.TodoList.GetAllTodoList())
             {
                 TodoListDto listDto = _mapper.ToDto<TodoListDto>(list);
                 
                 // manually mapping the Todos property
-                todos = _mapper.ToDtoList<TodoDto>(list.Todos).ToList();
+                todos = _mapper.ToDtoList<TodoDto>(list.Todos);
                 listDto.Todos = todos;
 
                 resultList.Add(listDto);
@@ -45,7 +45,7 @@ namespace ApplicationCore.Services
             {
                 return false;
             }
-            _unitOfWork.Commit();
+            _unitOfWork.Save();
             return true;
         }
 
@@ -65,7 +65,7 @@ namespace ApplicationCore.Services
                 todo.Color = hexValue;
             }
 
-            _unitOfWork.Commit();
+            _unitOfWork.Save();
             return true;
         }
 
@@ -78,7 +78,7 @@ namespace ApplicationCore.Services
                 return false;
             }
             _unitOfWork.TodoList.DeleteTodoList(list);
-            _unitOfWork.Commit();
+            _unitOfWork.Save();
             return true;
         }
 

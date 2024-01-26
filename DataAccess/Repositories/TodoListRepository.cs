@@ -43,19 +43,6 @@ namespace DataAccess.Repositories
             return true;
         }
 
-        public bool AddTodoToList(TodoList todoList, Todo todo)
-        {
-            try
-            {
-                todoList.AddTodo(todo);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return  true;
-        }
-
         public bool DeleteTodo(Todo todo)
         {
             try

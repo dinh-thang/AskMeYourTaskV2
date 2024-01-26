@@ -27,7 +27,7 @@ namespace ApplicationCore.Entities.Todo
         public void AddTodo(Todo todo)
         {
             _todos.Add(todo);
-            Todos = _todos;
+            Todos = _todos.AsReadOnly();
         }
     }
 }
