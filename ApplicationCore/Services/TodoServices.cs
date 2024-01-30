@@ -19,22 +19,25 @@ namespace ApplicationCore.Services
 
         public bool AddNewTodo(string listId, TodoDto newTodo)
         {
-            TodoList? todoList = _unitOfWork.TodoList.GetTodoListById(listId);
+            TodoList? todoList = _unitOfWork.TodoListsRepository.GetTodoListById(listId);
 
             if (todoList == null)
             {
                 return false;
             }
+
             Todo todo = _mapper.ToEntity<Todo>(newTodo);
-            todoList.AddTodo(todo);
-            _unitOfWork.Update(todoList);
-            //_unitOfWork.Commit();
+            todo.TodoListId = todoList.Id;
+            
+            //_unitOfWork.TodoListsRepository.UpdateTodoList(todoList);
+            _unitOfWork.TodoListsRepository.AddTodo(todo);
+            _unitOfWork.Save();
             return true;
         }
 
         public bool MarkTodoCompleted(string id)
         {
-            Todo? selectedTodo = _unitOfWork.TodoList.GetTodoById(id);
+            Todo? selectedTodo = _unitOfWork.TodoListsRepository.GetTodoById(id);
             
             if (selectedTodo == null) 
             {
@@ -47,7 +50,7 @@ namespace ApplicationCore.Services
 
         public bool UpdateTodoImportantStatus(string id, bool isImportant)
         {
-            Todo? selectedTodo = _unitOfWork.TodoList.GetTodoById(id);
+            Todo? selectedTodo = _unitOfWork.TodoListsRepository.GetTodoById(id);
 
             if (selectedTodo == null)
             {
@@ -59,7 +62,7 @@ namespace ApplicationCore.Services
 
         public bool UpdateTodoPriorityInList(string id, int priority)
         {
-            Todo? selectedTodo = _unitOfWork.TodoList.GetTodoById(id);
+            Todo? selectedTodo = _unitOfWork.TodoListsRepository.GetTodoById(id);
 
             if (selectedTodo == null)
             {

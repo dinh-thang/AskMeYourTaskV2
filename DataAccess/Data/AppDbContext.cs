@@ -7,7 +7,17 @@ namespace DataAccess.Data
     {
         public AppDbContext(DbContextOptions options) : base(options) { }
 
-        public DbSet<TodoList> TodoList { get; set; }
-        public DbSet<Todo> Todo { get; set; }
+        public DbSet<Todo> Todos { get; set; }
+        public DbSet<TodoList> TodoLists { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Todo>()
+                .HasOne(e => e.TodoList)
+                .WithMany(e => e.Todos)
+                .HasForeignKey(e => e.TodoListId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+        }
     }
 }

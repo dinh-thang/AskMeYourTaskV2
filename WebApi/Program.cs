@@ -1,10 +1,8 @@
 using ApplicationCore.Interfaces.Data;
-using ApplicationCore.Interfaces.Repository;
 using ApplicationCore.Interfaces.Services;
 using ApplicationCore.Mappers;
 using ApplicationCore.Services;
 using DataAccess.Data;
-using DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Endpoints;
 
@@ -20,7 +18,6 @@ builder.Services.AddDbContext<AppDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Register data services
-builder.Services.AddScoped<ITodoListRepository, TodoListRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Register application services

@@ -16,17 +16,20 @@ namespace ApplicationCore.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+
         public IEnumerable<TodoListDto> GetAllTodoLists()
         {
             List<TodoListDto> resultList = new List<TodoListDto>();
+            IEnumerable<Todo> todosE = new List<Todo>();
             IEnumerable<TodoDto> todos = new List<TodoDto>();
 
-            foreach (TodoList list in _unitOfWork.TodoList.GetAllTodoList())
+            foreach (TodoList list in _unitOfWork.TodoListsRepository.GetAllTodoList())
             {
                 TodoListDto listDto = _mapper.ToDto<TodoListDto>(list);
-                
+                todosE = _unitOfWork.TodoListsRepository.GetAllTodo(list.Id.ToString());
+
                 // manually mapping the Todos property
-                todos = _mapper.ToDtoList<TodoDto>(list.Todos);
+                todos = _mapper.ToDtoList<TodoDto>(todosE);
                 listDto.Todos = todos;
 
                 resultList.Add(listDto);
@@ -39,7 +42,7 @@ namespace ApplicationCore.Services
             try
             {
                 TodoList list = _mapper.ToEntity<TodoList>(newTodoList);
-                _unitOfWork.TodoList.AddTodoList(list);
+                _unitOfWork.TodoListsRepository.AddTodoList(list);
             }
             catch (Exception)
             {
@@ -51,7 +54,7 @@ namespace ApplicationCore.Services
 
         public bool UpdateTodoListColor(string id, string hexValue)
         {
-            TodoList? list = _unitOfWork.TodoList.GetTodoListById(id);
+            TodoList? list = _unitOfWork.TodoListsRepository.GetTodoListById(id);
 
             if (list == null) 
             {
@@ -71,16 +74,15 @@ namespace ApplicationCore.Services
 
         public bool RemoveTodoListById(string id)
         {
-            TodoList? list = _unitOfWork.TodoList.GetTodoListById(id);
+            TodoList? list = _unitOfWork.TodoListsRepository.GetTodoListById(id);
 
             if (list == null) 
             {
                 return false;
             }
-            _unitOfWork.TodoList.DeleteTodoList(list);
+            _unitOfWork.TodoListsRepository.DeleteTodoList(list);
             _unitOfWork.Save();
             return true;
         }
-
     }
 }

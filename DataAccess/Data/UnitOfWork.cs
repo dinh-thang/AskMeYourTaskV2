@@ -1,23 +1,32 @@
-﻿using ApplicationCore.Interfaces.Data;
+﻿using ApplicationCore.Entities.Todo;
+using ApplicationCore.Interfaces.Data;
 using ApplicationCore.Interfaces.Repository;
+using DataAccess.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext _context;
+        
+        private ITodoListRepository _todoListRepository;
 
-        public UnitOfWork(AppDbContext context, ITodoListRepository todoListRepository)
+        public UnitOfWork(AppDbContext context)
         {
             _context = context;
-            TodoList = todoListRepository;
         }
 
-        public ITodoListRepository TodoList { get; }
-
-        public void Update(object entity)
+        public ITodoListRepository TodoListsRepository
         {
-            _context.Update(entity);
+            get
+            {
+                if (_todoListRepository == null)
+                {
+                    _todoListRepository = new TodoListRepository(_context); 
+                }
+                return _todoListRepository;
+            }
         }
 
         public void Save()
@@ -29,5 +38,6 @@ namespace DataAccess.Data
         {
             _context.Dispose();
         }
+
     }
 }

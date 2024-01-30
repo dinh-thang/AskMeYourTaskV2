@@ -4,8 +4,8 @@ namespace ApplicationCore.Interfaces.Data
 {
     public interface IUnitOfWork : IDisposable
     {
-        public ITodoListRepository TodoList { get; }
-        void Update(object entity);
+        public ITodoListRepository TodoListsRepository { get; }
+
         void Save();
     }
 }

@@ -9,7 +9,7 @@ namespace ApplicationCore.Entities.Todo
         public TodoList()
         {
             _todos = new List<Todo>();
-            Todos = _todos.AsReadOnly();
+            Todos = _todos;
         }
 
         public TodoList(string title)
@@ -22,12 +22,6 @@ namespace ApplicationCore.Entities.Todo
 
         public string Title { get; set; } = string.Empty;
         public string Color { get; set; } = string.Empty;   
-        public IReadOnlyCollection<Todo> Todos { get; private set; }
-
-        public void AddTodo(Todo todo)
-        {
-            _todos.Add(todo);
-            Todos = _todos.AsReadOnly();
-        }
+        public ICollection<Todo> Todos { get; set; }
     }
 }

@@ -24,12 +24,31 @@ namespace ApplicationCore.Interfaces.Repository
         /// <returns>An IEnumerable of type TodoList</returns>
         IEnumerable<TodoList> GetAllTodoList();
 
+        IEnumerable<Todo>? GetAllTodo(string id);
+
         /// <summary>
         /// Add new todo list to the database
         /// </summary>
         /// <param name="todoList"></param>
         /// <returns>A boolean value indicate if the operation is successful.</returns>
         bool AddTodoList(TodoList todoList);
+
+        bool AddTodo(Todo todo);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="todo"></param>
+        /// <returns></returns>
+        bool UpdateTodoList(TodoList todoList);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="todo"></param>
+        /// <returns></returns>
+        bool UpdateTodo(Todo todo);
 
         /// <summary>
         /// Remove a todo list from the database
