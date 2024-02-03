@@ -6,9 +6,8 @@ namespace ApplicationCore.Dtos
         public Guid Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public bool Completed { get; set; }
-        public bool Important { get; set; }
-        public int Priority { get; set; }
-        public string Color { get; set; } = string.Empty;
+        public bool Completed { get; set; } = false;
+        public bool Important { get; set; } = false;
+        public int Priority { get; set; } = 0;
     }
 }

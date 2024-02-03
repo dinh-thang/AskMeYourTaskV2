@@ -29,9 +29,13 @@ namespace ApplicationCore.Services
             Todo todo = _mapper.ToEntity<Todo>(newTodo);
             todo.TodoListId = todoList.Id;
             
-            //_unitOfWork.TodoListsRepository.UpdateTodoList(todoList);
-            _unitOfWork.TodoListsRepository.AddTodo(todo);
+            bool success = _unitOfWork.TodoListsRepository.AddTodo(todo);
             _unitOfWork.Save();
+
+            if (!success) 
+            {
+                return false;
+            }
             return true;
         }
 
@@ -43,8 +47,15 @@ namespace ApplicationCore.Services
             {
                 return false;
             }
-
             selectedTodo.MarkCompleted();
+            
+            bool success = _unitOfWork.TodoListsRepository.Update<Todo>(selectedTodo);
+            _unitOfWork.Save();
+
+            if (!success)
+            {
+                return false;
+            }
             return true;
         }
 
@@ -56,7 +67,15 @@ namespace ApplicationCore.Services
             {
                 return false;
             }
-            selectedTodo.Important = true;
+            selectedTodo.Important = isImportant;
+
+            bool success = _unitOfWork.TodoListsRepository.Update<Todo>(selectedTodo);
+            _unitOfWork.Save();
+
+            if (!success)
+            {
+                return false;
+            }
             return true;
         }
 
@@ -68,7 +87,15 @@ namespace ApplicationCore.Services
             {
                 return false;
             }
-            selectedTodo.Priority = priority;   
+            selectedTodo.Priority = priority;
+
+            bool success = _unitOfWork.TodoListsRepository.Update<Todo>(selectedTodo);
+            _unitOfWork.Save();
+
+            if (!success)
+            {
+                return false;
+            }
             return true;
         }
     }

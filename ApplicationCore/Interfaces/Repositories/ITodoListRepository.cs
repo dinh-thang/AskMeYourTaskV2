@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Entities.Todo;
+using ApplicationCore.Entity;
 
 namespace ApplicationCore.Interfaces.Repository
 {
@@ -21,10 +22,15 @@ namespace ApplicationCore.Interfaces.Repository
         /// <summary>
         /// Get an enumerator of a collection containing all todo lists
         /// </summary>
-        /// <returns>An IEnumerable of type TodoList</returns>
+        /// <returns>An Enumerable of type TodoList</returns>
         IEnumerable<TodoList> GetAllTodoList();
 
-        IEnumerable<Todo>? GetAllTodo(string id);
+        /// <summary>
+        /// Get an enumerator of a collection containing all todos of a todo list
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>An Enumerable of type Todo</returns>
+        IEnumerable<Todo> GetAllTodo(string id);
 
         /// <summary>
         /// Add new todo list to the database
@@ -33,22 +39,12 @@ namespace ApplicationCore.Interfaces.Repository
         /// <returns>A boolean value indicate if the operation is successful.</returns>
         bool AddTodoList(TodoList todoList);
 
+        /// <summary>
+        /// Add new todo to the database
+        /// </summary>
+        /// <param name="todo"></param>
+        /// <returns>A boolean value indicate if the operation is successful.</returns>
         bool AddTodo(Todo todo);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="todo"></param>
-        /// <returns></returns>
-        bool UpdateTodoList(TodoList todoList);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="todo"></param>
-        /// <returns></returns>
-        bool UpdateTodo(Todo todo);
 
         /// <summary>
         /// Remove a todo list from the database
@@ -63,5 +59,13 @@ namespace ApplicationCore.Interfaces.Repository
         /// <param name="todo"></param>
         /// <returns>A boolean value indicate if the operation is successful.</returns>
         bool DeleteTodo(Todo todo);
+
+        /// <summary>
+        /// Start tracking and modify the given entity state 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        bool Update<T>(T entity) where T : BaseEntity;
     }
 }

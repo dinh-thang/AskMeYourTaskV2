@@ -21,7 +21,14 @@ namespace ApplicationCore.Entities.Todo
         }
 
         public string Title { get; set; } = string.Empty;
-        public string Color { get; set; } = string.Empty;   
+        public string Color { get; private set; } = string.Empty;
         public ICollection<Todo> Todos { get; set; }
+
+        public void SetColor(string hexValue)
+        {
+
+
+            Color = hexValue;
+        }
     }
 }

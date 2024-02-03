@@ -2,12 +2,12 @@
 
 namespace ApplicationCore.Interfaces.Repositories
 {
-    public interface IGenericRepository<TEntity> where TEntity : BaseEntity
+    public interface IGenericRepository<T> where T : BaseEntity
     {
-        TEntity Get(Guid id);
-        IEnumerable<TEntity> GetAll();
-        void Add(TEntity entity);
-        void Delete(TEntity entity);
-        void Update(TEntity entity);
+        T? Get(string id);
+        IEnumerable<T> GetAll();
+        void Add(T entity);
+        void Update(T entity);
+        void Delete(T entity);
     }
 }

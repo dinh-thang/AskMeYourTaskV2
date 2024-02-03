@@ -1,4 +1,6 @@
 ﻿using ApplicationCore.Entities.Todo;
+using ApplicationCore.Entity;
+using ApplicationCore.Exceptions;
 using ApplicationCore.Interfaces.Repository;
 using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
@@ -31,13 +33,13 @@ namespace DataAccess.Repositories
             return _context.TodoLists.ToList();
         }
 
-        public IEnumerable<Todo>? GetAllTodo(string id)
+        public IEnumerable<Todo> GetAllTodo(string id)
         {
             TodoList? list = GetTodoListById(id);
 
             if (list == null) 
             {
-                return null;
+                throw new EntityNotFoundException($"Can't find entity with id: {id}");
             }
 
             _context.Entry(list)
@@ -73,25 +75,6 @@ namespace DataAccess.Repositories
             return true;
         }
 
-        public bool UpdateTodoList(TodoList todoList)
-        {
-            try
-            {
-                _context.TodoLists.Attach(todoList);
-                _context.Entry(todoList).State = EntityState.Modified;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public bool UpdateTodo(Todo todo)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool DeleteTodo(Todo todo)
         {
             try
@@ -118,6 +101,19 @@ namespace DataAccess.Repositories
             return true;
         }
 
+        public bool Update<T>(T entity) where T : BaseEntity
+        {
+            try
+            {
+                _context.Set<T>().Attach(entity);
+                _context.Entry(entity).State = EntityState.Modified;
+            }
+            catch (Exception) 
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
         

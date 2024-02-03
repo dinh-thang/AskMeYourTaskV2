@@ -6,6 +6,6 @@ namespace ApplicationCore.Dtos
         public Guid Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Color { get; set; } = string.Empty;
-        public IEnumerable<TodoDto> Todos { get; set; }
+        public IEnumerable<TodoDto> Todos { get; set; } = new List<TodoDto>();
     }
 }

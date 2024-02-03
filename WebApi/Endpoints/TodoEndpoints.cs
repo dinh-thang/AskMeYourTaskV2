@@ -5,7 +5,7 @@ namespace WebApi.Endpoints
 {
     public static class TodoEndpoints
     {
-        private static string baseRoute = "api/todo";
+        private static string baseRoute = "api/todos";
 
         public static void MapEndpoints(this WebApplication app)
         {

@@ -1,42 +1,43 @@
 ﻿using ApplicationCore.Entity;
 using ApplicationCore.Interfaces.Repositories;
 using DataAccess.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
-    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         private readonly AppDbContext _context;
 
         public GenericRepository(AppDbContext context)
         {
-            _context = context;
+            _context = context;           
         }
 
-        public TEntity? Get(Guid id)
+        public virtual T? Get(string id)
         {
-            return _context.Set<TEntity>().FirstOrDefault(e => e.Id == id);
+            Guid guid = Guid.Parse(id);
+            return _context.Set<T>().FirstOrDefault(x => x.Id == guid);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
-            return _context.Set<TEntity>().ToList();    
+            return _context.Set<T>().ToList();
         }
 
-        public void Add(TEntity entity)
+        public void Add(T entity)
         {
-            _context.Set<TEntity>().Add(entity);
-            
+            _context.Set<T>().Add(entity);
+        }
+        public void Update(T entity)
+        {
+            _context.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
         }
 
-        public void Delete(TEntity entity)
+        public void Delete(T entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Update(TEntity entity)
-        {
-            throw new NotImplementedException();
+            _context.Set<T>().Remove(entity);
         }
     }
 }

@@ -20,17 +20,17 @@ namespace ApplicationCore.Services
         public IEnumerable<TodoListDto> GetAllTodoLists()
         {
             List<TodoListDto> resultList = new List<TodoListDto>();
-            IEnumerable<Todo> todosE = new List<Todo>();
-            IEnumerable<TodoDto> todos = new List<TodoDto>();
+            IEnumerable<Todo> todoEntities = new List<Todo>();
+            IEnumerable<TodoDto> todoDtos = new List<TodoDto>();
 
             foreach (TodoList list in _unitOfWork.TodoListsRepository.GetAllTodoList())
             {
                 TodoListDto listDto = _mapper.ToDto<TodoListDto>(list);
-                todosE = _unitOfWork.TodoListsRepository.GetAllTodo(list.Id.ToString());
+                todoEntities = _unitOfWork.TodoListsRepository.GetAllTodo(list.Id.ToString());
 
                 // manually mapping the Todos property
-                todos = _mapper.ToDtoList<TodoDto>(todosE);
-                listDto.Todos = todos;
+                todoDtos = _mapper.ToDtoList<TodoDto>(todoEntities);
+                listDto.Todos = todoDtos;
 
                 resultList.Add(listDto);
             }
@@ -39,12 +39,10 @@ namespace ApplicationCore.Services
 
         public bool AddNewTodoList(TodoListDto newTodoList)
         {
-            try
-            {
-                TodoList list = _mapper.ToEntity<TodoList>(newTodoList);
-                _unitOfWork.TodoListsRepository.AddTodoList(list);
-            }
-            catch (Exception)
+            TodoList list = _mapper.ToEntity<TodoList>(newTodoList);
+            bool success = _unitOfWork.TodoListsRepository.AddTodoList(list);
+            
+            if (!success) 
             {
                 return false;
             }
@@ -60,14 +58,14 @@ namespace ApplicationCore.Services
             {
                 return false;
             }
+            list.SetColor(hexValue);
 
-            list.Color = hexValue;
+            bool success = _unitOfWork.TodoListsRepository.Update<TodoList>(list);
 
-            foreach (Todo todo in list.Todos) 
+            if (!success) 
             {
-                todo.Color = hexValue;
+                return false;
             }
-
             _unitOfWork.Save();
             return true;
         }
@@ -80,7 +78,12 @@ namespace ApplicationCore.Services
             {
                 return false;
             }
-            _unitOfWork.TodoListsRepository.DeleteTodoList(list);
+            bool success = _unitOfWork.TodoListsRepository.DeleteTodoList(list);
+
+            if (!success)
+            {
+                return false;
+            }
             _unitOfWork.Save();
             return true;
         }
