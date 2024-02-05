@@ -1,31 +1,4 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a name="readme-top"></a>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
 
 <!-- PROJECT LOGO -->
 <br />
@@ -33,16 +6,9 @@
   <h3 align="center">Ask Me Your Task V2</h3>
 
   <p align="center">
-    An task management web application implementing a modified Clean Architecture to provide web UI and APIs. 
-    <br />
-    <a href=""><strong>Documentation</strong></a>
+    An task management application implementing a customized Clean Architecture to allow user managing their tasks and schedules.
     <br />
     <br />
-    <a href="">View Demo</a>
-    ·
-    <a href="">Report Bug</a>
-    ·
-    <a href="">Request Feature</a>
   </p>
 </div>
 
@@ -68,7 +34,6 @@
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
@@ -81,16 +46,9 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+This is a personal project implementing previous knowledge about software design and architecture I learned in the past. 
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
+It is a task management application, allowing user to do CRUDs on todo and schedule their events. The highlight feature is to intergrate a chat-bot with the knowledge of a user's schedules and tasks to the web application, it can then answer the user's question about their daily tasks and events , web UI will be provided also.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -98,7 +56,7 @@ Use the `BLANK_README.md` to get started.
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+I tried to use less third-party libraries and frameworks as much as possible to get myself to build more custom solutions, here are the technologies used:
 
 * [ASP.NET Core 8 Minimal API][minimal-api-url]
 
@@ -109,8 +67,13 @@ This section should list any major frameworks/libraries used to bootstrap your p
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+### Steps
+
+1. Clone this repository: `git clone https://github.com/your_username/AskMeYourTaskV2.git`
+2. Open the solution file (`.sln`) in Visual Studio 2022 or later.
+3. Update the connection string in `appsettings.json` to point to your database.
+4. Build the solution (Ctrl+Shift+B).
+
 
 ### Prerequisites
 
