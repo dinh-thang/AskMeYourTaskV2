@@ -1,6 +1,4 @@
-﻿using ApplicationCore.Entity;
-
-namespace ApplicationCore.Entities.Todo
+﻿namespace ApplicationCore.Entities.Todo
 {
     public class Todo : BaseEntity
     {

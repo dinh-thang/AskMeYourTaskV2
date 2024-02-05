@@ -1,4 +1,4 @@
-﻿using ApplicationCore.Interfaces.Repository;
+﻿using ApplicationCore.Interfaces.Repositories;
 
 namespace ApplicationCore.Interfaces.Data
 {

@@ -2,7 +2,8 @@
 using ApplicationCore.Entities.Todo;
 using ApplicationCore.Interfaces.Data;
 using ApplicationCore.Interfaces.Services;
-using ApplicationCore.Mappers;
+using CustomLibraries.Mappers;
+using CustomLibraries.Guards;
 
 namespace ApplicationCore.Services
 {
@@ -19,84 +20,88 @@ namespace ApplicationCore.Services
 
         public bool AddNewTodo(string listId, TodoDto newTodo)
         {
-            TodoList? todoList = _unitOfWork.TodoListsRepository.GetTodoListById(listId);
+            Guid guid = Guid.Parse(listId);
+            TodoList? todoList = _unitOfWork.TodoListsRepository.GetTodoListById(guid);
 
-            if (todoList == null)
+            try
+            {
+                Guard.AgainstNull(todoList, $"Can't find todo list with id {guid}");
+            }
+            catch (ArgumentNullException)
             {
                 return false;
             }
-
+          
             Todo todo = _mapper.ToEntity<Todo>(newTodo);
-            todo.TodoListId = todoList.Id;
+            todo.TodoListId = todoList!.Id;
             
-            bool success = _unitOfWork.TodoListsRepository.AddTodo(todo);
+            bool state = _unitOfWork.TodoListsRepository.AddTodo(todo);
             _unitOfWork.Save();
 
-            if (!success) 
-            {
-                return false;
-            }
-            return true;
+            return state;
         }
 
         public bool MarkTodoCompleted(string id)
         {
-            Todo? selectedTodo = _unitOfWork.TodoListsRepository.GetTodoById(id);
-            
-            if (selectedTodo == null) 
+            Guid guid = Guid.Parse(id);
+            Todo? selectedTodo = _unitOfWork.TodoListsRepository.GetTodoById(guid);
+
+            try
+            {
+                Guard.AgainstNull(selectedTodo, $"Can't find todo list with id {guid}");
+            }
+            catch (ArgumentNullException)
             {
                 return false;
             }
-            selectedTodo.MarkCompleted();
+            selectedTodo!.MarkCompleted();
             
-            bool success = _unitOfWork.TodoListsRepository.Update<Todo>(selectedTodo);
+            bool state = _unitOfWork.TodoListsRepository.Update<Todo>(selectedTodo);
             _unitOfWork.Save();
 
-            if (!success)
-            {
-                return false;
-            }
-            return true;
+            return state;
         }
 
         public bool UpdateTodoImportantStatus(string id, bool isImportant)
         {
-            Todo? selectedTodo = _unitOfWork.TodoListsRepository.GetTodoById(id);
+            Guid guid = Guid.Parse(id);
+            Todo? selectedTodo = _unitOfWork.TodoListsRepository.GetTodoById(guid);
 
-            if (selectedTodo == null)
+            try
+            {
+                Guard.AgainstNull(selectedTodo, $"Can't find todo list with id {guid}");
+            }
+            catch (ArgumentNullException)
             {
                 return false;
             }
-            selectedTodo.Important = isImportant;
+            selectedTodo!.Important = isImportant;
 
-            bool success = _unitOfWork.TodoListsRepository.Update<Todo>(selectedTodo);
+            bool state = _unitOfWork.TodoListsRepository.Update<Todo>(selectedTodo);
             _unitOfWork.Save();
 
-            if (!success)
-            {
-                return false;
-            }
-            return true;
+            return state;
         }
 
         public bool UpdateTodoPriorityInList(string id, int priority)
         {
-            Todo? selectedTodo = _unitOfWork.TodoListsRepository.GetTodoById(id);
+            Guid guid = Guid.Parse(id);
+            Todo? selectedTodo = _unitOfWork.TodoListsRepository.GetTodoById(guid);
 
-            if (selectedTodo == null)
+            try
+            {
+                Guard.AgainstNull(selectedTodo, $"Can't find todo list with id {guid}.");
+            }
+            catch (ArgumentNullException)
             {
                 return false;
             }
-            selectedTodo.Priority = priority;
+            selectedTodo!.Priority = priority;
 
-            bool success = _unitOfWork.TodoListsRepository.Update<Todo>(selectedTodo);
+            bool state = _unitOfWork.TodoListsRepository.Update<Todo>(selectedTodo);
             _unitOfWork.Save();
 
-            if (!success)
-            {
-                return false;
-            }
-            return true;
+            return state;
         }
     }
 }

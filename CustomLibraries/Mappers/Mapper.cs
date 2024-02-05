@@ -1,7 +1,7 @@
-﻿using ApplicationCore.Exceptions;
+﻿using CustomLibraries.Exceptions;
 using System.Reflection;
 
-namespace ApplicationCore.Mappers
+namespace CustomLibraries.Mappers
 {
     /// <summary>
     /// A DTO - entity 2 ways mapper. The properties are automatically mapped if their names and types are similar. For example, "Title" prop's value in entity a will be mapped to "Title" prop in DTO b.
@@ -30,7 +30,7 @@ namespace ApplicationCore.Mappers
 
             // Create a new object of type TDto. The constructor above is invoked, new, object[0] is the default value for a parameterless ctor.
             object dtoObject = dtoConstructor.Invoke(new object[0]);
-            
+
             // Get all props in the TDto type.
             _dtoProps = dtoType.GetProperties().ToList();
 
@@ -38,7 +38,7 @@ namespace ApplicationCore.Mappers
             {
                 // current dto property
                 currentDtoProp = _dtoProps[i];
-                
+
                 // cancel if the current property is discarded
                 if (_discardedProps.Contains(currentDtoProp.Name))
                 {
@@ -48,7 +48,7 @@ namespace ApplicationCore.Mappers
 
                 // get the corresponding property from the srcEntity
                 var targetProp = srcEntity.GetType().GetProperty(currentDtoProp.Name);
-                
+
                 if (targetProp == null)
                 {
                     throw new PropertyNotFoundException($"Couldn't find property name {currentDtoProp.Name} in {srcEntity.ToString}");
@@ -59,7 +59,7 @@ namespace ApplicationCore.Mappers
                 // current entity value (nullable)
                 var entityValue = currentEntityProp.GetValue(srcEntity);
 
-                if (entityValue != null) 
+                if (entityValue != null)
                 {
                     if (currentDtoProp.PropertyType != entityValue.GetType())
                     {
@@ -88,10 +88,10 @@ namespace ApplicationCore.Mappers
             _entityProps = entityType.GetProperties().ToList();
 
             // loop for those types, assign the data from dto to the entity object
-            for (int i = 0; i < _dtoProps.Count; i++) 
+            for (int i = 0; i < _dtoProps.Count; i++)
             {
                 currentDtoProp = _dtoProps[i];
-                
+
                 // cancel if the current property is discarded
                 if (_discardedProps.Contains(currentDtoProp.Name))
                 {
@@ -128,7 +128,7 @@ namespace ApplicationCore.Mappers
         {
             List<TDto> resultList = new List<TDto>();
 
-            foreach (object entity in entityList) 
+            foreach (object entity in entityList)
             {
                 resultList.Add(ToDto<TDto>(entity));
             }
@@ -148,7 +148,7 @@ namespace ApplicationCore.Mappers
 
         public void DiscardProperties(IEnumerable<string> propertyNames)
         {
-            foreach (string prop in propertyNames) 
+            foreach (string prop in propertyNames)
             {
                 _discardedProps.Add(prop);
             }

@@ -1,4 +1,4 @@
-﻿using ApplicationCore.Entity;
+﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces.Repositories;
 using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;

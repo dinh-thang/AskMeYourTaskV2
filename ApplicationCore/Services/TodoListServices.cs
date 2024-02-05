@@ -2,7 +2,8 @@
 using ApplicationCore.Entities.Todo;
 using ApplicationCore.Interfaces.Data;
 using ApplicationCore.Interfaces.Services;
-using ApplicationCore.Mappers;
+using CustomLibraries.Guards;
+using CustomLibraries.Mappers;
 
 namespace ApplicationCore.Services
 {
@@ -26,9 +27,8 @@ namespace ApplicationCore.Services
             foreach (TodoList list in _unitOfWork.TodoListsRepository.GetAllTodoList())
             {
                 TodoListDto listDto = _mapper.ToDto<TodoListDto>(list);
-                todoEntities = _unitOfWork.TodoListsRepository.GetAllTodo(list.Id.ToString());
-
-                // manually mapping the Todos property
+                
+                todoEntities = _unitOfWork.TodoListsRepository.GetAllTodo(list.Id);
                 todoDtos = _mapper.ToDtoList<TodoDto>(todoEntities);
                 listDto.Todos = todoDtos;
 
@@ -41,51 +41,46 @@ namespace ApplicationCore.Services
         {
             TodoList list = _mapper.ToEntity<TodoList>(newTodoList);
             bool success = _unitOfWork.TodoListsRepository.AddTodoList(list);
-            
-            if (!success) 
-            {
-                return false;
-            }
             _unitOfWork.Save();
-            return true;
+            return success;
         }
 
         public bool UpdateTodoListColor(string id, string hexValue)
         {
-            TodoList? list = _unitOfWork.TodoListsRepository.GetTodoListById(id);
+            Guid guid = Guid.Parse(id);
+            TodoList? list = _unitOfWork.TodoListsRepository.GetTodoListById(guid);
 
-            if (list == null) 
+            try
+            {
+                Guard.AgainstNull(list, $"Can't find todo list with id: {guid}.");
+            }
+            catch (ArgumentNullException)
             {
                 return false;
             }
-            list.SetColor(hexValue);
+            list!.SetColor(hexValue);
 
             bool success = _unitOfWork.TodoListsRepository.Update<TodoList>(list);
-
-            if (!success) 
-            {
-                return false;
-            }
             _unitOfWork.Save();
-            return true;
+            return success;
         }
 
         public bool RemoveTodoListById(string id)
         {
-            TodoList? list = _unitOfWork.TodoListsRepository.GetTodoListById(id);
+            Guid guid = Guid.Parse(id);
+            TodoList? list = _unitOfWork.TodoListsRepository.GetTodoListById(guid);
 
-            if (list == null) 
+            try
+            {
+                Guard.AgainstNull(list, $"Can't find todo list with id: {guid}.");
+            }
+            catch (ArgumentNullException)
             {
                 return false;
             }
-            bool success = _unitOfWork.TodoListsRepository.DeleteTodoList(list);
-
-            if (!success)
-            {
-                return false;
-            }
+            bool success = _unitOfWork.TodoListsRepository.DeleteTodoList(list!);
             _unitOfWork.Save();
-            return true;
+            return success;
         }
     }
 }

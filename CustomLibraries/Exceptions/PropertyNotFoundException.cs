@@ -1,4 +1,4 @@
-﻿namespace ApplicationCore.Exceptions
+﻿namespace CustomLibraries.Exceptions
 {
     public class PropertyNotFoundException : Exception
     {

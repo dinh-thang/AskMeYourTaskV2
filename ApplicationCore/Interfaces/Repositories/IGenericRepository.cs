@@ -1,4 +1,4 @@
-﻿using ApplicationCore.Entity;
+﻿using ApplicationCore.Entities;
 
 namespace ApplicationCore.Interfaces.Repositories
 {

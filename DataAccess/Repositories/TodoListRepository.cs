@@ -1,7 +1,7 @@
-﻿using ApplicationCore.Entities.Todo;
-using ApplicationCore.Entity;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Entities.Todo;
 using ApplicationCore.Exceptions;
-using ApplicationCore.Interfaces.Repository;
+using ApplicationCore.Interfaces.Repositories;
 using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,16 +16,14 @@ namespace DataAccess.Repositories
             _context = context;
         }
 
-        public Todo? GetTodoById(string id)
+        public Todo? GetTodoById(Guid id)
         {            
-            Guid guid = Guid.Parse(id);
-            return _context.Todos.FirstOrDefault(todo => todo.Id == guid);
+            return _context.Todos.FirstOrDefault(todo => todo.Id == id);
         }
 
-        public TodoList? GetTodoListById(string id)
+        public TodoList? GetTodoListById(Guid id)
         {
-            Guid guid = Guid.Parse(id);
-            return _context.TodoLists.FirstOrDefault(todoList => todoList.Id == guid);
+            return _context.TodoLists.FirstOrDefault(todoList => todoList.Id == id);
         }    
 
         public IEnumerable<TodoList> GetAllTodoList()
@@ -33,13 +31,13 @@ namespace DataAccess.Repositories
             return _context.TodoLists.ToList();
         }
 
-        public IEnumerable<Todo> GetAllTodo(string id)
+        public IEnumerable<Todo> GetAllTodo(Guid id)
         {
             TodoList? list = GetTodoListById(id);
 
             if (list == null) 
             {
-                throw new EntityNotFoundException($"Can't find entity with id: {id}");
+                throw new EntityNotFoundException($"Can't find entity with id: {id.ToString()}");
             }
 
             _context.Entry(list)
