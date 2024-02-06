@@ -16,9 +16,9 @@ namespace WebApi.Endpoints
             app.MapPut($"{baseRoute}/update/priority", (ITodoServices todoServices, string id, int priority) => UpdateTodoPriority(todoServices, id, priority)); 
         }
 
-        private static IResult AddNewTodo(ITodoServices todoServices, string listId, TodoDto dto)
+        private static async Task<IResult> AddNewTodo(ITodoServices todoServices, string listId, TodoDto dto)
         {
-            bool isSuccessful = todoServices.AddNewTodo(listId, dto);
+            bool isSuccessful = await todoServices.AddNewTodoAsync(listId, dto);
             
             if (!isSuccessful) 
             {
@@ -27,9 +27,9 @@ namespace WebApi.Endpoints
             return Results.Ok(dto);
         }
 
-        private static IResult MarkTodoCompleted(ITodoServices todoServices, string id) 
+        private static async Task<IResult> MarkTodoCompleted(ITodoServices todoServices, string id) 
         {
-            bool isSuccessful = todoServices.MarkTodoCompleted(id);
+            bool isSuccessful = await todoServices.MarkTodoCompletedAsync(id);
 
             if (!isSuccessful)
             {
@@ -38,9 +38,9 @@ namespace WebApi.Endpoints
             return Results.Ok();
         }
 
-        private static IResult UpdateTodoImportantStatus(ITodoServices todoServices, string id, bool isImportant)
+        private static async Task<IResult> UpdateTodoImportantStatus(ITodoServices todoServices, string id, bool isImportant)
         {
-            bool isSuccessful = todoServices.UpdateTodoImportantStatus(id, isImportant);
+            bool isSuccessful = await todoServices.UpdateTodoImportantStatusAsync(id, isImportant);
 
             if (!isSuccessful)
             {
@@ -49,9 +49,9 @@ namespace WebApi.Endpoints
             return Results.Ok();
         }
         
-        private static IResult UpdateTodoPriority(ITodoServices todoServices, string id, int priority) 
+        private static async Task<IResult> UpdateTodoPriority(ITodoServices todoServices, string id, int priority) 
         {
-            bool isSuccessful = todoServices.UpdateTodoPriorityInList(id, priority);
+            bool isSuccessful = await todoServices.UpdateTodoPriorityInListAsync(id, priority);
 
             if (!isSuccessful)
             {

@@ -16,42 +16,42 @@ namespace DataAccess.Repositories
             _context = context;
         }
 
-        public Todo? GetTodoById(Guid id)
+        public async Task<Todo?> GetTodoByIdAsync(Guid id)
         {            
-            return _context.Todos.FirstOrDefault(todo => todo.Id == id);
+            return await _context.Todos.FirstOrDefaultAsync(todo => todo.Id == id);
         }
 
-        public TodoList? GetTodoListById(Guid id)
+        public async Task<TodoList?> GetTodoListByIdAsync(Guid id)
         {
-            return _context.TodoLists.FirstOrDefault(todoList => todoList.Id == id);
+            return await _context.TodoLists.FirstOrDefaultAsync(todoList => todoList.Id == id);
         }    
 
-        public IEnumerable<TodoList> GetAllTodoList()
+        public async Task<IEnumerable<TodoList>> GetAllTodoListAsync()
         {
-            return _context.TodoLists.ToList();
+            return await _context.TodoLists.ToListAsync();
         }
 
-        public IEnumerable<Todo> GetAllTodo(Guid id)
+        public async Task<IEnumerable<Todo>> GetAllTodoAsync(Guid id)
         {
-            TodoList? list = GetTodoListById(id);
+            TodoList? list = await GetTodoListByIdAsync(id);
 
             if (list == null) 
             {
                 throw new EntityNotFoundException($"Can't find entity with id: {id.ToString()}");
             }
 
-            _context.Entry(list)
+            await _context.Entry(list)
                 .Collection(l => l.Todos)
-                .Load();
+                .LoadAsync();
 
             return list.Todos;
         }
 
-        public bool AddTodoList(TodoList todoList)
+        public async Task<bool> AddTodoListAsync(TodoList todoList)
         {
             try
             {
-                _context.TodoLists.Add(todoList);
+                await _context.TodoLists.AddAsync(todoList);
             }
             catch (Exception)
             {
@@ -60,11 +60,11 @@ namespace DataAccess.Repositories
             return true;
         }
 
-        public bool AddTodo(Todo todo)
+        public async Task<bool> AddTodoAsync(Todo todo)
         {
             try
             {
-                _context.Todos.Add(todo);
+                await _context.Todos.AddAsync(todo);
             }
             catch (Exception) 
             {

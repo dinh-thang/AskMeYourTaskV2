@@ -18,17 +18,17 @@ namespace ApplicationCore.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<TodoListDto> GetAllTodoLists()
+        public async Task<IEnumerable<TodoListDto>> GetAllTodoListsAsync()
         {
             List<TodoListDto> resultList = new List<TodoListDto>();
             IEnumerable<Todo> todoEntities = new List<Todo>();
             IEnumerable<TodoDto> todoDtos = new List<TodoDto>();
 
-            foreach (TodoList list in _unitOfWork.TodoListsRepository.GetAllTodoList())
+            foreach (TodoList list in await _unitOfWork.TodoListsRepository.GetAllTodoListAsync())
             {
                 TodoListDto listDto = _mapper.ToDto<TodoListDto>(list);
                 
-                todoEntities = _unitOfWork.TodoListsRepository.GetAllTodo(list.Id);
+                todoEntities = await _unitOfWork.TodoListsRepository.GetAllTodoAsync(list.Id);
                 todoDtos = _mapper.ToDtoList<TodoDto>(todoEntities);
                 listDto.Todos = todoDtos;
 
@@ -37,18 +37,18 @@ namespace ApplicationCore.Services
             return resultList;
         }
 
-        public bool AddNewTodoList(TodoListDto newTodoList)
+        public async Task<bool> AddNewTodoListAsync(TodoListDto newTodoList)
         {
             TodoList list = _mapper.ToEntity<TodoList>(newTodoList);
-            bool success = _unitOfWork.TodoListsRepository.AddTodoList(list);
+            bool success = await _unitOfWork.TodoListsRepository.AddTodoListAsync(list);
             _unitOfWork.Save();
             return success;
         }
 
-        public bool UpdateTodoListColor(string id, string hexValue)
+        public async Task<bool> UpdateTodoListColorAsync(string id, string hexValue)
         {
             Guid guid = Guid.Parse(id);
-            TodoList? list = _unitOfWork.TodoListsRepository.GetTodoListById(guid);
+            TodoList? list = await _unitOfWork.TodoListsRepository.GetTodoListByIdAsync(guid);
 
             try
             {
@@ -65,10 +65,10 @@ namespace ApplicationCore.Services
             return success;
         }
 
-        public bool RemoveTodoListById(string id)
+        public async Task<bool> RemoveTodoListByIdAsync(string id)
         {
             Guid guid = Guid.Parse(id);
-            TodoList? list = _unitOfWork.TodoListsRepository.GetTodoListById(guid);
+            TodoList? list = await _unitOfWork.TodoListsRepository.GetTodoListByIdAsync(guid);
 
             try
             {

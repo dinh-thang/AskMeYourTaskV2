@@ -4,10 +4,10 @@ namespace ApplicationCore.Interfaces.Services
 {
     public interface ITodoServices
     {
-        bool AddNewTodo(string listId, TodoDto newTodo);
-        bool MarkTodoCompleted(string id);
-        bool UpdateTodoImportantStatus(string id, bool isImportant);
-        bool UpdateTodoPriorityInList(string id, int priority);
+        Task<bool> AddNewTodoAsync(string listId, TodoDto newTodo);
+        Task<bool> MarkTodoCompletedAsync(string id);
+        Task<bool> UpdateTodoImportantStatusAsync(string id, bool isImportant);
+        Task<bool> UpdateTodoPriorityInListAsync(string id, int priority);
 
     }
 }

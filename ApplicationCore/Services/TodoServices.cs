@@ -18,10 +18,10 @@ namespace ApplicationCore.Services
             _mapper = mapper;
         }
 
-        public bool AddNewTodo(string listId, TodoDto newTodo)
+        public async Task<bool> AddNewTodoAsync(string listId, TodoDto newTodo)
         {
             Guid guid = Guid.Parse(listId);
-            TodoList? todoList = _unitOfWork.TodoListsRepository.GetTodoListById(guid);
+            TodoList? todoList = await _unitOfWork.TodoListsRepository.GetTodoListByIdAsync(guid);
 
             try
             {
@@ -31,20 +31,22 @@ namespace ApplicationCore.Services
             {
                 return false;
             }
+            newTodo.Important = false;
+            newTodo.Completed = false;
           
             Todo todo = _mapper.ToEntity<Todo>(newTodo);
             todo.TodoListId = todoList!.Id;
             
-            bool state = _unitOfWork.TodoListsRepository.AddTodo(todo);
+            bool state = await _unitOfWork.TodoListsRepository.AddTodoAsync(todo);
             _unitOfWork.Save();
 
             return state;
         }
 
-        public bool MarkTodoCompleted(string id)
+        public async Task<bool> MarkTodoCompletedAsync(string id)
         {
             Guid guid = Guid.Parse(id);
-            Todo? selectedTodo = _unitOfWork.TodoListsRepository.GetTodoById(guid);
+            Todo? selectedTodo = await _unitOfWork.TodoListsRepository.GetTodoByIdAsync(guid);
 
             try
             {
@@ -62,10 +64,10 @@ namespace ApplicationCore.Services
             return state;
         }
 
-        public bool UpdateTodoImportantStatus(string id, bool isImportant)
+        public async Task<bool> UpdateTodoImportantStatusAsync(string id, bool isImportant)
         {
             Guid guid = Guid.Parse(id);
-            Todo? selectedTodo = _unitOfWork.TodoListsRepository.GetTodoById(guid);
+            Todo? selectedTodo = await _unitOfWork.TodoListsRepository.GetTodoByIdAsync(guid);
 
             try
             {
@@ -83,10 +85,10 @@ namespace ApplicationCore.Services
             return state;
         }
 
-        public bool UpdateTodoPriorityInList(string id, int priority)
+        public async Task<bool> UpdateTodoPriorityInListAsync(string id, int priority)
         {
             Guid guid = Guid.Parse(id);
-            Todo? selectedTodo = _unitOfWork.TodoListsRepository.GetTodoById(guid);
+            Todo? selectedTodo = await _unitOfWork.TodoListsRepository.GetTodoByIdAsync(guid);
 
             try
             {

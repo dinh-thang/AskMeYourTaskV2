@@ -15,14 +15,14 @@ namespace WebApi.Endpoints
             app.MapPut($"{baseRoute}/update/color", (ITodoListServices todoListServices, string id, string colorHex) => UpdateTodoListColor(todoListServices, id, colorHex));
         }
 
-        private static IResult GetAllTodoLists(ITodoListServices todoListServices)
+        private static async Task<IResult> GetAllTodoLists(ITodoListServices todoListServices)
         {
-            return Results.Ok(todoListServices.GetAllTodoLists());
+            return Results.Ok(await todoListServices.GetAllTodoListsAsync());
         }
 
-        private static IResult AddNewTodoList(ITodoListServices todoListServices, TodoListDto newTodoList)
+        private static async Task<IResult> AddNewTodoList(ITodoListServices todoListServices, TodoListDto newTodoList)
         {
-            bool isSuccess = todoListServices.AddNewTodoList(newTodoList);
+            bool isSuccess = await todoListServices.AddNewTodoListAsync(newTodoList);
             
             if (isSuccess)
             {
@@ -31,9 +31,9 @@ namespace WebApi.Endpoints
             return Results.StatusCode(500);
         }
 
-        private static IResult RemoveTodoListById(ITodoListServices todoListServices, string id)
+        private static async Task<IResult> RemoveTodoListById(ITodoListServices todoListServices, string id)
         {
-            bool isSuccess = todoListServices.RemoveTodoListById(id);
+            bool isSuccess = await todoListServices.RemoveTodoListByIdAsync(id);
 
             if (isSuccess)
             {
@@ -42,9 +42,9 @@ namespace WebApi.Endpoints
             return Results.BadRequest("Operation was unsuccessful.");
         }
 
-        private static IResult UpdateTodoListColor(ITodoListServices todoListServices, string id, string color)
+        private static async Task<IResult> UpdateTodoListColor(ITodoListServices todoListServices, string id, string color)
         {
-            bool isSuccess = todoListServices.UpdateTodoListColor(id, color);
+            bool isSuccess = await todoListServices.UpdateTodoListColorAsync(id, color);
 
             if (isSuccess) 
             {

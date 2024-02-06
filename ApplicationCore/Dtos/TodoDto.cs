@@ -1,5 +1,4 @@
-﻿
-namespace ApplicationCore.Dtos
+﻿namespace ApplicationCore.Dtos
 {
     public class TodoDto
     {
