@@ -13,14 +13,35 @@ This web API provides essential features for a task management web app.
 
 ## API Reference
 
-#### Get all TodoList
+### Schemas
+
+#### TodoDto
+| Property | Type     | 
+| :-------- | :------- | 
+| `id`      | `string` | 
+| `title`      | `string` | 
+| `description`      | `string` | 
+| `completed`      | `bool` | 
+| `important`      | `bool` | 
+| `priority`      | `int` | 
+
+#### TodoListDto
+| Property | Type     | 
+| :-------- | :------- | 
+| `id`      | `string` | 
+| `title`      | `string` | 
+| `color`      | `string` | 
+| `todos`      | `Enumerable<TodoDto>` | 
+
+
+### Get all TodoList
 
 ```http
   GET /api/todoLists/get
 ```
 Return an Enumerable of all TodoList objects
 
-#### Add new Todo
+### Add new Todo
 
 ```http
   POST /api/todos/add
@@ -32,7 +53,7 @@ Add a new Todo to the selected TodoList
 | `listId`      | `string` | **(Required)** Id of the TodoList being modified |
 | `todo`      | `TodoDto` | **(Required)** New todo |
 
-#### Add new TodoList
+### Add new TodoList
 
 ```http
   POST /api/todoLists/add
@@ -43,7 +64,7 @@ Add a new TodoList
 | :-------- | :------- | :-------------------------------- |
 | `todoList`      | `TodoListDto` | **(Required)** New todo list |
 
-#### Update a Todo's complete state
+### Update a Todo's complete state
 
 ```http
   PUT /api/todos/update/complete
@@ -54,7 +75,7 @@ Set the selected Todo to be completed
 | `id`      | `string` | **(Required)** Id of the Todo |
 
 
-#### Update a Todo's important state
+### Update a Todo's important state
 
 ```http
   PUT /api/todos/update/important
@@ -65,7 +86,7 @@ Set the selected Todo's important state
 | `id`      | `string` | **(Required)** Id of the Todo |
 | `isImportant`      | `bool` | **(Required)**  |
 
-#### Update a Todo's priority state
+### Update a Todo's priority state
 
 ```http
   PUT /api/todos/update/priority
@@ -77,7 +98,7 @@ Set the numerical order of the Todo in a TodoList
 | `priority`      | `int` | **(Required)** The numerical order (0 is the highest priority) |
 
 
-#### Update a TodoList's color theme
+### Update a TodoList's color theme
 
 ```http
   PUT /api/todoLists/update/color
@@ -88,7 +109,7 @@ Set the color theme for the TodoList. This will also set the color of the Todo o
 | `id`      | `string` | **(Required)** Id of the TodoList |
 | `colorHex`      | `string` | **(Required)** Hex representation of the color |
 
-#### Delete a TodoList
+### Delete a TodoList
 
 ```http
   DELETE /api/todoList/delete
@@ -97,7 +118,7 @@ Set the color theme for the TodoList. This will also set the color of the Todo o
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `id`      | `string` | **Required**. Id of the TodoList |
-## Features
+
 
 
 
