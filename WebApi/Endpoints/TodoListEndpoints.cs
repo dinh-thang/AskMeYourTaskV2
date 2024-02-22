@@ -22,35 +22,41 @@ namespace WebApi.Endpoints
 
         private static async Task<IResult> AddNewTodoList(ITodoListServices todoListServices, TodoListDto newTodoList)
         {
-            bool isSuccess = await todoListServices.AddNewTodoListAsync(newTodoList);
-            
-            if (isSuccess)
+            try
             {
+                await todoListServices.AddNewTodoListAsync(newTodoList);
                 return Results.Created();
             }
-            return Results.StatusCode(500);
+            catch (Exception)
+            {
+                return Results.StatusCode(500);
+            }
         }
 
         private static async Task<IResult> RemoveTodoListById(ITodoListServices todoListServices, string id)
         {
-            bool isSuccess = await todoListServices.RemoveTodoListByIdAsync(id);
-
-            if (isSuccess)
+            try
             {
+                await todoListServices.RemoveTodoListByIdAsync(id);
                 return Results.NoContent();
             }
-            return Results.BadRequest("Operation was unsuccessful.");
+            catch (Exception e)
+            {
+                return Results.BadRequest($"Operation was unsuccessful. {e.Message}");
+            }
         }
 
         private static async Task<IResult> UpdateTodoListColor(ITodoListServices todoListServices, string id, string color)
         {
-            bool isSuccess = await todoListServices.UpdateTodoListColorAsync(id, color);
-
-            if (isSuccess) 
+            try
             {
+                await todoListServices.UpdateTodoListColorAsync(id, color);
                 return Results.NoContent();
             }
-            return Results.BadRequest("Operation was unsuccessful.");
+            catch (Exception e)
+            {
+                return Results.BadRequest($"Operation was unsuccessful. {e.Message}");
+            }
         }
     }
 }

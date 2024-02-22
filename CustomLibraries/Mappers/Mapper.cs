@@ -3,10 +3,6 @@ using System.Reflection;
 
 namespace CustomLibraries.Mappers
 {
-    /// <summary>
-    /// A DTO - entity 2 ways mapper. The properties are automatically mapped if their names and types are similar. For example, "Title" prop's value in entity a will be mapped to "Title" prop in DTO b.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
     public class Mapper : IMapper
     {
         private List<string> _discardedProps;
@@ -71,8 +67,6 @@ namespace CustomLibraries.Mappers
             }
             return (TDto)dtoObject;
         }
-
-
         public TEntity ToEntity<TEntity>(object srcDto)
         {
             PropertyInfo currentDtoProp;

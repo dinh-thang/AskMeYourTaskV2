@@ -2,8 +2,8 @@
 using ApplicationCore.Entities.Todo;
 using ApplicationCore.Interfaces.Data;
 using ApplicationCore.Interfaces.Services;
-using CustomLibraries.Mappers;
 using CustomLibraries.Guards;
+using CustomLibraries.Mappers;
 
 namespace ApplicationCore.Services
 {
@@ -11,6 +11,9 @@ namespace ApplicationCore.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private Todo _tempTodo;
+        private Guid _guid;
+        
 
         public TodoServices(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -18,92 +21,129 @@ namespace ApplicationCore.Services
             _mapper = mapper;
         }
 
-        public async Task<bool> AddNewTodoAsync(string listId, TodoDto newTodo)
+        public async Task AddNewTodoAsync(string listId, TodoDto newTodo)
         {
-            Guid guid = Guid.Parse(listId);
-            TodoList? todoList = await _unitOfWork.TodoListsRepository.GetTodoListByIdAsync(guid);
-
             try
             {
-                Guard.AgainstNull(todoList, $"Can't find todo list with id {guid}");
+                if (!Guid.TryParse(listId, out _guid))
+                {
+                    throw new ArgumentException("Invalid id format.");
+                }
+
+                TodoList? todoList = await _unitOfWork.TodoListsRepository.GetTodoListByIdAsync(_guid);
+                Guard.AgainstNull(todoList, $"Can't find todo list with id {_guid}");
+
+                newTodo.Important = false;
+                newTodo.Completed = false;
+
+                Todo todo = _mapper.ToEntity<Todo>(newTodo);
+                todo.TodoListId = todoList!.Id;
+
+                await _unitOfWork.TodoListsRepository.AddTodoAsync(todo);
+                await _unitOfWork.SaveAsync();
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException e)
             {
-                return false;
+                throw new ArgumentNullException($"Can't find todo list with id {_guid}. {e.Message}");
             }
-            newTodo.Important = false;
-            newTodo.Completed = false;
-          
-            Todo todo = _mapper.ToEntity<Todo>(newTodo);
-            todo.TodoListId = todoList!.Id;
+            catch (ArgumentException e)
+            {
+                throw new ArgumentException("Invalid id format.", e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("An unexpected error occured.", e);
+            }
+        }
+
+        public async Task MarkTodoCompletedAsync(string id)
+        {
+            try
+            {
+                if (!Guid.TryParse(id, out _guid))
+                {
+                    throw new ArgumentException("Invalid id format.");
+                }
+                Todo? selectedTodo = await _unitOfWork.TodoListsRepository.GetTodoByIdAsync(_guid);
+                Guard.AgainstNull(selectedTodo, $"Can't find todo list with id {_guid}");
+           
+                selectedTodo!.MarkCompleted();
             
-            bool state = await _unitOfWork.TodoListsRepository.AddTodoAsync(todo);
-            _unitOfWork.Save();
-
-            return state;
+                _unitOfWork.TodoListsRepository.Update<Todo>(selectedTodo);
+                await _unitOfWork.SaveAsync();
+            }
+            catch (ArgumentNullException e)
+            {
+                throw new ArgumentNullException($"Can't find todo list with id {_guid}. {e.Message}");
+            }
+            catch (ArgumentException e)
+            {
+                throw new ArgumentException("Invalid id format.", e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("An unexpected error occured.", e);
+            }
         }
 
-        public async Task<bool> MarkTodoCompletedAsync(string id)
+        public async Task UpdateTodoImportantStatusAsync(string id, bool isImportant)
         {
-            Guid guid = Guid.Parse(id);
-            Todo? selectedTodo = await _unitOfWork.TodoListsRepository.GetTodoByIdAsync(guid);
-
             try
             {
-                Guard.AgainstNull(selectedTodo, $"Can't find todo list with id {guid}");
-            }
-            catch (ArgumentNullException)
-            {
-                return false;
-            }
-            selectedTodo!.MarkCompleted();
-            
-            bool state = _unitOfWork.TodoListsRepository.Update<Todo>(selectedTodo);
-            _unitOfWork.Save();
+                if (!Guid.TryParse(id, out _guid))
+                {
+                    throw new ArgumentException("Invalid id format.");
+                }
+                Todo? selectedTodo = await _unitOfWork.TodoListsRepository.GetTodoByIdAsync(_guid);
+                Guard.AgainstNull(selectedTodo, $"Can't find todo list with id {_guid}");
+           
+                selectedTodo!.Important = isImportant;
 
-            return state;
+                _unitOfWork.TodoListsRepository.Update<Todo>(selectedTodo);
+                await _unitOfWork.SaveAsync();
+            }
+            catch (ArgumentNullException e)
+            {
+                throw new ArgumentNullException($"Can't find todo list with id {_guid}. {e.Message}");
+            }
+            catch (ArgumentException e)
+            {
+                throw new ArgumentException("Invalid id format.", e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("An unexpected error occured.", e);
+            }
         }
 
-        public async Task<bool> UpdateTodoImportantStatusAsync(string id, bool isImportant)
+        public async Task UpdateTodoPriorityInListAsync(string id, int priority)
         {
-            Guid guid = Guid.Parse(id);
-            Todo? selectedTodo = await _unitOfWork.TodoListsRepository.GetTodoByIdAsync(guid);
-
             try
             {
-                Guard.AgainstNull(selectedTodo, $"Can't find todo list with id {guid}");
+                if (!Guid.TryParse(id, out _guid))
+                {
+                    throw new ArgumentException("Invalid id format.");
+                }
+                Todo? selectedTodo = await _unitOfWork.TodoListsRepository.GetTodoByIdAsync(_guid);
+                Guard.AgainstNull(selectedTodo, $"Can't find todo list with id {_guid}.");
+
+                selectedTodo!.Priority = priority;
+
+                _unitOfWork.TodoListsRepository.Update<Todo>(selectedTodo);
+                await _unitOfWork.SaveAsync();
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException e)
             {
-                return false;
+                throw new ArgumentNullException($"Can't find todo list with id {_guid}. {e.Message}");
             }
-            selectedTodo!.Important = isImportant;
-
-            bool state = _unitOfWork.TodoListsRepository.Update<Todo>(selectedTodo);
-            _unitOfWork.Save();
-
-            return state;
-        }
-
-        public async Task<bool> UpdateTodoPriorityInListAsync(string id, int priority)
-        {
-            Guid guid = Guid.Parse(id);
-            Todo? selectedTodo = await _unitOfWork.TodoListsRepository.GetTodoByIdAsync(guid);
-
-            try
+            catch (ArgumentException e)
             {
-                Guard.AgainstNull(selectedTodo, $"Can't find todo list with id {guid}.");
+                throw new ArgumentException("Invalid id format.", e.Message);
             }
-            catch (ArgumentNullException)
+            catch (Exception e)
             {
-                return false;
+                throw new Exception("An unexpected error occured.", e);
             }
-            selectedTodo!.Priority = priority;
-
-            bool state = _unitOfWork.TodoListsRepository.Update<Todo>(selectedTodo);
-            _unitOfWork.Save();
-
-            return state;
         }
     }
 }

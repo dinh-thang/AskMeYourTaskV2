@@ -1,4 +1,7 @@
-﻿namespace CustomLibraries.Guards
+﻿using System.Collections.Generic;
+using System;
+
+namespace CustomLibraries.Guards
 {
     public static class Guard
     {

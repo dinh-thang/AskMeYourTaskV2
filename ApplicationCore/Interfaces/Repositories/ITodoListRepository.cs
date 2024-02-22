@@ -9,10 +9,10 @@ namespace ApplicationCore.Interfaces.Repositories
         Task<TodoList?> GetTodoListByIdAsync(Guid id);
         Task<IEnumerable<TodoList>> GetAllTodoListAsync();
         Task<IEnumerable<Todo>> GetAllTodoAsync(Guid id);
-        Task<bool> AddTodoListAsync(TodoList todoList);
-        Task<bool> AddTodoAsync(Todo todo);
-        bool DeleteTodoList(TodoList todoList);
-        bool DeleteTodo(Todo todo);
-        bool Update<T>(T entity) where T : BaseEntity;
+        Task AddTodoListAsync(TodoList todoList);
+        Task AddTodoAsync(Todo todo);
+        void DeleteTodoList(TodoList todoList);
+        void DeleteTodo(Todo todo);
+        void Update<T>(T entity) where T : BaseEntity;
     }
 }

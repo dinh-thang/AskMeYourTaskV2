@@ -37,50 +37,33 @@ namespace ApplicationCore.Services
             return resultList;
         }
 
-        public async Task<bool> AddNewTodoListAsync(TodoListDto newTodoList)
+        public async Task AddNewTodoListAsync(TodoListDto newTodoList)
         {
             TodoList list = _mapper.ToEntity<TodoList>(newTodoList);
-            bool success = await _unitOfWork.TodoListsRepository.AddTodoListAsync(list);
-            _unitOfWork.Save();
-            return success;
+            await _unitOfWork.TodoListsRepository.AddTodoListAsync(list);
+            await _unitOfWork.SaveAsync();
         }
 
-        public async Task<bool> UpdateTodoListColorAsync(string id, string hexValue)
+        public async Task UpdateTodoListColorAsync(string id, string hexValue)
         {
             Guid guid = Guid.Parse(id);
             TodoList? list = await _unitOfWork.TodoListsRepository.GetTodoListByIdAsync(guid);
-
-            try
-            {
-                Guard.AgainstNull(list, $"Can't find todo list with id: {guid}.");
-            }
-            catch (ArgumentNullException)
-            {
-                return false;
-            }
+            Guard.AgainstNull(list, $"Can't find todo list with id: {guid}.");
+       
             list!.SetColor(hexValue);
 
-            bool success = _unitOfWork.TodoListsRepository.Update<TodoList>(list);
-            _unitOfWork.Save();
-            return success;
+            _unitOfWork.TodoListsRepository.Update<TodoList>(list);
+            await _unitOfWork.SaveAsync();
         }
 
-        public async Task<bool> RemoveTodoListByIdAsync(string id)
+        public async Task RemoveTodoListByIdAsync(string id)
         {
             Guid guid = Guid.Parse(id);
             TodoList? list = await _unitOfWork.TodoListsRepository.GetTodoListByIdAsync(guid);
+            Guard.AgainstNull(list, $"Can't find todo list with id: {guid}.");
 
-            try
-            {
-                Guard.AgainstNull(list, $"Can't find todo list with id: {guid}.");
-            }
-            catch (ArgumentNullException)
-            {
-                return false;
-            }
-            bool success = _unitOfWork.TodoListsRepository.DeleteTodoList(list!);
-            _unitOfWork.Save();
-            return success;
+            _unitOfWork.TodoListsRepository.DeleteTodoList(list!);
+            await _unitOfWork.SaveAsync();
         }
     }
 }

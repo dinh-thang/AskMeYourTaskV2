@@ -6,6 +6,6 @@ namespace ApplicationCore.Interfaces.Data
     {
         public ITodoListRepository TodoListsRepository { get; }
 
-        void Save();
+        Task SaveAsync();
     }
 }
