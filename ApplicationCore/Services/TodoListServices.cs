@@ -47,57 +47,24 @@ namespace ApplicationCore.Services
 
         public async Task UpdateColorAsync(string id, string hexValue)
         {
-            try
-            {
-                if (!Guid.TryParse(id, out _guid))
-                {
-                    throw new ArgumentException("Invalid id format.");
-                }
-                TodoList? list = await _unitOfWork.TodoListsRepository.GetTodoListByIdAsync(_guid);
-                Guard.AgainstNull(list, $"Can't find todo list with id: {_guid}.");
+            Guid guid = Guid.Parse(id);
+            TodoList? list = await _unitOfWork.TodoListsRepository.GetTodoListByIdAsync(guid);
+            Guard.AgainstNull(list, $"Can't find todo list with id: {guid}.");
+       
+            list!.SetColor(hexValue);
 
-                list!.SetColor(hexValue);
-
-                _unitOfWork.TodoListsRepository.Update(list);
-                await _unitOfWork.SaveAsync();
-            }
-            catch (ArgumentNullException e)
-            {
-                throw new ArgumentNullException($"Can't find todo list with id {_guid}. {e.Message}");
-            }
-            catch (ArgumentException e)
-            {
-                throw new ArgumentException("Invalid id format.", e.Message);
-            }
+            _unitOfWork.TodoListsRepository.Update<TodoList>(list);
+            await _unitOfWork.SaveAsync();
         }
 
         public async Task RemoveByIdAsync(string id)
         {
-            try
-            {
-                if (!Guid.TryParse(id, out _guid))
-                {
-                    throw new ArgumentException("Invalid id format.");
-                }
-                TodoList? list = await _unitOfWork.TodoListsRepository.GetTodoListByIdAsync(_guid);
-                Guard.AgainstNull(list, $"Can't find todo list with id: {_guid}.");
+            Guid guid = Guid.Parse(id);
+            TodoList? list = await _unitOfWork.TodoListsRepository.GetTodoListByIdAsync(guid);
+            Guard.AgainstNull(list, $"Can't find todo list with id: {guid}.");
 
-                _unitOfWork.TodoListsRepository.DeleteTodoList(list!);
-                await _unitOfWork.SaveAsync();
-            }
-            catch (ArgumentNullException e)
-            {
-                throw new ArgumentNullException($"Can't find todo list with id {_guid}. {e.Message}");
-            }
-            catch (ArgumentException e)
-            {
-                throw new ArgumentException("Invalid id format.", e.Message);
-            }
-        }
-
-        public Task UpdateTagAsync(string id, string tagTitle)
-        {
-            throw new NotImplementedException();
+            _unitOfWork.TodoListsRepository.DeleteTodoList(list!);
+            await _unitOfWork.SaveAsync();
         }
     }
 }
