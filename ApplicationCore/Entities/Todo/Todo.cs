@@ -18,6 +18,7 @@
         public bool Important { get; set; } = false;
         public bool Completed { get; private set; } = false;
         public DateTime DateCreated { get; private set; } = DateTime.Now;
+        public DateTime DueDate { get; set; }
         public int Priority { get; set; } = 0;
 
         public Guid TodoListId { get; set; }
