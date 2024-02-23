@@ -6,6 +6,8 @@ There are many popular task management application in the market but all of them
 This is also an opportunity for our team to bring what we learned to practice and gain experience through solving problem in the process. We welcome any feedback for improvement!
 
 
+## Features
+
 ## Tech Stack
 
 **Client:** ReactJS
