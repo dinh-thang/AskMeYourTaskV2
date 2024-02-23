@@ -11,4 +11,8 @@
     <ProjectReference Include="..\CustomLibraries\CustomLibraries.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ValueObjects\" />
+  </ItemGroup>
+
 </Project>

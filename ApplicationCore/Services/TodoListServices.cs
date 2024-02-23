@@ -18,7 +18,7 @@ namespace ApplicationCore.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<TodoListDto>> GetAllTodoListsAsync()
+        public async Task<IEnumerable<TodoListDto>> GetAllListsAsync()
         {
             List<TodoListDto> resultList = new List<TodoListDto>();
             IEnumerable<Todo> todoEntities = new List<Todo>();
@@ -37,14 +37,14 @@ namespace ApplicationCore.Services
             return resultList;
         }
 
-        public async Task AddNewTodoListAsync(TodoListDto newTodoList)
+        public async Task AddAsync(TodoListDto newTodoList)
         {
             TodoList list = _mapper.ToEntity<TodoList>(newTodoList);
             await _unitOfWork.TodoListsRepository.AddTodoListAsync(list);
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task UpdateTodoListColorAsync(string id, string hexValue)
+        public async Task UpdateColorAsync(string id, string hexValue)
         {
             Guid guid = Guid.Parse(id);
             TodoList? list = await _unitOfWork.TodoListsRepository.GetTodoListByIdAsync(guid);
@@ -54,9 +54,9 @@ namespace ApplicationCore.Services
 
             _unitOfWork.TodoListsRepository.Update<TodoList>(list);
             await _unitOfWork.SaveAsync();
-        }
+        }  
 
-        public async Task RemoveTodoListByIdAsync(string id)
+        public async Task RemoveByIdAsync(string id)
         {
             Guid guid = Guid.Parse(id);
             TodoList? list = await _unitOfWork.TodoListsRepository.GetTodoListByIdAsync(guid);
@@ -64,6 +64,11 @@ namespace ApplicationCore.Services
 
             _unitOfWork.TodoListsRepository.DeleteTodoList(list!);
             await _unitOfWork.SaveAsync();
+        }
+
+        public Task UpdateTagAsync(string id, string tagTitle)
+        {
+            throw new NotImplementedException();
         }
     }
 }

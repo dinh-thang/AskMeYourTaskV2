@@ -17,14 +17,14 @@ namespace WebApi.Endpoints
 
         private static async Task<IResult> GetAllTodoLists(ITodoListServices todoListServices)
         {
-            return Results.Ok(await todoListServices.GetAllTodoListsAsync());
+            return Results.Ok(await todoListServices.GetAllListsAsync());
         }
 
         private static async Task<IResult> AddNewTodoList(ITodoListServices todoListServices, TodoListDto newTodoList)
         {
             try
             {
-                await todoListServices.AddNewTodoListAsync(newTodoList);
+                await todoListServices.AddAsync(newTodoList);
                 return Results.Created();
             }
             catch (Exception)
@@ -37,7 +37,7 @@ namespace WebApi.Endpoints
         {
             try
             {
-                await todoListServices.RemoveTodoListByIdAsync(id);
+                await todoListServices.RemoveByIdAsync(id);
                 return Results.NoContent();
             }
             catch (Exception e)
@@ -50,7 +50,7 @@ namespace WebApi.Endpoints
         {
             try
             {
-                await todoListServices.UpdateTodoListColorAsync(id, color);
+                await todoListServices.UpdateColorAsync(id, color);
                 return Results.NoContent();
             }
             catch (Exception e)
