@@ -11,7 +11,6 @@ namespace ApplicationCore.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private Todo _tempTodo;
         private Guid _guid;
         
 
@@ -50,9 +49,29 @@ namespace ApplicationCore.Services
             {
                 throw new ArgumentException("Invalid id format.", e.Message);
             }
-            catch (Exception e)
+        }
+
+        public async Task DeleteTodoAsync(string id)
+        {
+            try
             {
-                throw new Exception("An unexpected error occured.", e);
+                if (!Guid.TryParse(id, out _guid))
+                {
+                    throw new ArgumentException("Invalid id format.");
+                }
+                Todo? selectedTodo = await _unitOfWork.TodoListsRepository.GetTodoByIdAsync(_guid);
+                Guard.AgainstNull(selectedTodo, $"Can't find todo list with id {_guid}");
+
+                _unitOfWork.TodoListsRepository.DeleteTodo(selectedTodo!);
+                await _unitOfWork.SaveAsync();
+            }
+            catch (ArgumentNullException e)
+            {
+                throw new ArgumentNullException($"Can't find todo list with id {_guid}. {e.Message}");
+            }
+            catch (ArgumentException e)
+            {
+                throw new ArgumentException("Invalid id format.", e.Message);
             }
         }
 
@@ -80,10 +99,6 @@ namespace ApplicationCore.Services
             {
                 throw new ArgumentException("Invalid id format.", e.Message);
             }
-            catch (Exception e)
-            {
-                throw new Exception("An unexpected error occured.", e);
-            }
         }
 
         public async Task UpdateTodoImportantStatusAsync(string id, bool isImportant)
@@ -110,10 +125,6 @@ namespace ApplicationCore.Services
             {
                 throw new ArgumentException("Invalid id format.", e.Message);
             }
-            catch (Exception e)
-            {
-                throw new Exception("An unexpected error occured.", e);
-            }
         }
 
         public async Task UpdateTodoPriorityInListAsync(string id, int priority)
@@ -139,10 +150,6 @@ namespace ApplicationCore.Services
             catch (ArgumentException e)
             {
                 throw new ArgumentException("Invalid id format.", e.Message);
-            }
-            catch (Exception e)
-            {
-                throw new Exception("An unexpected error occured.", e);
             }
         }
     }
