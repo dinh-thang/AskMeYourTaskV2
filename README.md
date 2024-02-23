@@ -1,8 +1,12 @@
 
 # Ask Me Your Task V2
 
-This web API provides essential features for a task management web app.
+There are many popular task management application in the market but all of them either is extra complicated or doesn't provide all the neccessary features. We understand that this is a matter of preference so this project is another task management application tailored for our personal usage. 
 
+This is also an opportunity for our team to bring what we learned to practice and gain experience through solving problem in the process. We welcome any feedback for improvement!
+
+
+## Features
 
 ## Tech Stack
 
