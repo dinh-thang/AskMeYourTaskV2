@@ -4,10 +4,10 @@ namespace ApplicationCore.Interfaces.Services
 {
     public interface ITodoListServices
     {
-        Task<IEnumerable<TodoListDto>> GetAllListsAsync();
-        Task AddAsync(TodoListDto newTodoList);
-        Task RemoveByIdAsync(string id);
-        Task UpdateColorAsync(string id, string hexValue);
-        Task UpdateTagAsync(string id, string tagTitle);
+        Task<IEnumerable<TodoListDto>> GetAllTodoListsAsync();
+        Task AddNewTodoListAsync(TodoListDto newTodoList);
+        Task RemoveTodoListByIdAsync(string id);
+        Task UpdateTodoListColorAsync(string id, string hexValue);
+        Task UpdateTodoListTagAsync(string id, string tag);
     }
 }

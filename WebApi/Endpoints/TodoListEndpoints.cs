@@ -13,18 +13,19 @@ namespace WebApi.Endpoints
             app.MapPost($"{baseRoute}/add", (ITodoListServices todoListServices, TodoListDto dto) => AddNewTodoList(todoListServices, dto));
             app.MapDelete($"{baseRoute}/delete", (ITodoListServices todoListServices, string id) => RemoveTodoListById(todoListServices, id));
             app.MapPut($"{baseRoute}/update/color", (ITodoListServices todoListServices, string id, string colorHex) => UpdateTodoListColor(todoListServices, id, colorHex));
+            app.MapPut($"{baseRoute}/update/tag", (ITodoListServices todoListServices, string id, string tag) => UpdateTodoListTag(todoListServices, id, tag));
         }
 
         private static async Task<IResult> GetAllTodoLists(ITodoListServices todoListServices)
         {
-            return Results.Ok(await todoListServices.GetAllListsAsync());
+            return Results.Ok(await todoListServices.GetAllTodoListsAsync());
         }
 
         private static async Task<IResult> AddNewTodoList(ITodoListServices todoListServices, TodoListDto newTodoList)
         {
             try
             {
-                await todoListServices.AddAsync(newTodoList);
+                await todoListServices.AddNewTodoListAsync(newTodoList);
                 return Results.Created();
             }
             catch (Exception)
@@ -37,7 +38,7 @@ namespace WebApi.Endpoints
         {
             try
             {
-                await todoListServices.RemoveByIdAsync(id);
+                await todoListServices.RemoveTodoListByIdAsync(id);
                 return Results.NoContent();
             }
             catch (Exception e)
@@ -50,7 +51,20 @@ namespace WebApi.Endpoints
         {
             try
             {
-                await todoListServices.UpdateColorAsync(id, color);
+                await todoListServices.UpdateTodoListColorAsync(id, color);
+                return Results.NoContent();
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest($"Operation was unsuccessful. {e.Message}");
+            }
+        }
+
+        private static async Task<IResult> UpdateTodoListTag(ITodoListServices todoListServices, string id, string tag)
+        {
+            try
+            {
+                await todoListServices.UpdateTodoListTagAsync(id, tag);
                 return Results.NoContent();
             }
             catch (Exception e)

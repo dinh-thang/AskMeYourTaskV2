@@ -101,6 +101,32 @@ namespace ApplicationCore.Services
             }
         }
 
+        public async Task UpdateTodoDueDateAsync(string id, DateTime dueDate)
+        {
+            try
+            {
+                if (!Guid.TryParse(id, out _guid))
+                {
+                    throw new ArgumentException("Invalid id format.");
+                }
+                Todo? selectedTodo = await _unitOfWork.TodoListsRepository.GetTodoByIdAsync(_guid);
+                Guard.AgainstNull(selectedTodo, $"Can't find todo list with id {_guid}");
+
+                selectedTodo!.DueDate = dueDate;
+
+                _unitOfWork.TodoListsRepository.Update(selectedTodo);
+                await _unitOfWork.SaveAsync();
+            }
+            catch (ArgumentNullException e)
+            {
+                throw new ArgumentNullException($"Can't find todo list with id {_guid}. {e.Message}");
+            }
+            catch (ArgumentException e)
+            {
+                throw new ArgumentException("Invalid id format.", e.Message);
+            }
+        }
+
         public async Task UpdateTodoImportantStatusAsync(string id, bool isImportant)
         {
             try
@@ -114,7 +140,7 @@ namespace ApplicationCore.Services
            
                 selectedTodo!.Important = isImportant;
 
-                _unitOfWork.TodoListsRepository.Update<Todo>(selectedTodo);
+                _unitOfWork.TodoListsRepository.Update(selectedTodo);
                 await _unitOfWork.SaveAsync();
             }
             catch (ArgumentNullException e)

@@ -12,7 +12,8 @@ namespace WebApi.Endpoints
             app.MapPost($"{baseRoute}/add", (ITodoServices todoServices, string listId, TodoDto dto) => AddNewTodo(todoServices, listId, dto));
             app.MapPut($"{baseRoute}/update/complete", (ITodoServices todoServices, string id) => MarkTodoCompleted(todoServices, id));
             app.MapPut($"{baseRoute}/update/important", (ITodoServices todoServices, string id, bool isImportant) => UpdateTodoImportantStatus(todoServices, id, isImportant));
-            app.MapPut($"{baseRoute}/update/priority", (ITodoServices todoServices, string id, int priority) => UpdateTodoPriority(todoServices, id, priority)); 
+            app.MapPut($"{baseRoute}/update/priority", (ITodoServices todoServices, string id, int priority) => UpdateTodoPriority(todoServices, id, priority));
+            app.MapPut($"{baseRoute}/update/duedate", (ITodoServices todoServices, string id, DateTime dueDate) => UpdateTodoDueDate(todoServices, id, dueDate));
         }
 
         private static async Task<IResult> AddNewTodo(ITodoServices todoServices, string listId, TodoDto dto)
@@ -62,6 +63,19 @@ namespace WebApi.Endpoints
                 return Results.Ok();
             }
             catch (Exception e) 
+            {
+                return Results.BadRequest($"Operation was unsuccessful. {e.Message}");
+            }
+        }
+
+        private static async Task<IResult> UpdateTodoDueDate(ITodoServices todoServices, string id, DateTime dueDate)
+        {
+            try
+            {
+                await todoServices.UpdateTodoDueDateAsync(id, dueDate);
+                return Results.Ok();
+            }
+            catch (Exception e)
             {
                 return Results.BadRequest($"Operation was unsuccessful. {e.Message}");
             }

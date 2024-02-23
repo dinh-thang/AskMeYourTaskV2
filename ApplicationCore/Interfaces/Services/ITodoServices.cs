@@ -8,7 +8,7 @@ namespace ApplicationCore.Interfaces.Services
         Task MarkTodoCompletedAsync(string id);
         Task UpdateTodoImportantStatusAsync(string id, bool isImportant);
         Task UpdateTodoPriorityInListAsync(string id, int priority);
-
+        Task UpdateTodoDueDateAsync(string id, DateTime dueDate);
         Task DeleteTodoAsync(string id);
     }
 }
