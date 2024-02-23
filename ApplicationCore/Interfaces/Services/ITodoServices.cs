@@ -9,5 +9,6 @@ namespace ApplicationCore.Interfaces.Services
         Task UpdateTodoImportantStatusAsync(string id, bool isImportant);
         Task UpdateTodoPriorityInListAsync(string id, int priority);
 
+        Task DeleteTodoAsync(string id);
     }
 }
